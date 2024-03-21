@@ -23,6 +23,10 @@ abstract class Controller {
         $this->pageAttributes[$key] = $value;
     }
 
+    protected function getHttpParam($key) {
+        return $this->httpParams[$key] ?? null;
+    }
+
     public function render() {
         extract($this->pageAttributes);
 

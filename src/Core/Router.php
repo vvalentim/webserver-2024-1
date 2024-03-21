@@ -5,14 +5,36 @@ namespace Core;
 use Core\Helpers;
 
 class Router {
-    public $routes = [];
+    protected $routes = [];
 
     protected function add($method, $uri, $controller) {
         $uri = trim($uri, "/");
+        $uri .= "/";
+        $params = [];
 
-        $this->routes[$method][$uri] = [
+        /**
+         * This should extract all the parameters from the uri as long as it follow the
+         * pattern of being enclosed with curly braces.
+         * 
+         * If there is subsequent matches (e.g.: posts/{id}{name}/), it will be ignored till a 
+         * trailing slash is found, making only the last match a valid parameter.
+         */
+        if (preg_match_all("/{(?<params>[^{\/}]*)}(?=\/)/", $uri, $matches)) {
+            $params = $matches['params'];
+        }
+
+        /**
+         * Replace matches with a regex group and format the trailing slashes to store the 
+         * pattern, which will be used to check on incoming requests when routing.
+         */
+        $pattern = preg_replace(["/{([^{\/}]*)}(?=\/)/", "/\//"], ["(\w*?)", "\/"], $uri);
+        $pattern = "/^".$pattern."$/";
+        
+        $this->routes[$method][] = [
+            "uri" => $uri,
             "controller" => $controller,
-            "middleware" => null,
+            "params" => $params,
+            "pattern" => $pattern
         ];
 
         return $this;
@@ -46,12 +68,18 @@ class Router {
 
     public function route($method, $uri) {
         $uri = trim($uri, "/");
-        $route = $this->routes[$method][$uri] ?? null;
+        $uri .= "/";
+        $routes = $this->routes[$method] ?? [];
 
-        if ($route) {
-            $class = $route["controller"];
-            
-            return new $class($method, "hello world!");
+        foreach($routes as $route) {
+            if (preg_match($route["pattern"], $uri, $matches)) {
+                array_shift($matches);
+
+                $controller = $route["controller"];
+                $params = array_combine($route["params"], $matches);
+
+                return new $controller($method, $params);
+            }
         }
 
         return $this->abort(404);

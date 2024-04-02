@@ -60,7 +60,7 @@ class Login extends Controller {
             $this->redirect("/dashboard");
         }
 
-        $this->setAttribute("title", "Painel administrativo");
+        $this->setAttribute("title", "Acesso de colaboradores");
         $this->render();
     }
 }

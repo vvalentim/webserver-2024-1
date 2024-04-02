@@ -1,19 +1,14 @@
 <?php
 
 return [
-    // Database and driver
-    "database" => [
-        "driver" => "pgsql",
-        "host" => "localhost",
-        "name" => "webserver_project",
-        "user" => "vvalentim",
+    "db_local" => [
+        "dsn" => "pgsql:host=127.0.0.1;port=5432;dbname=webserver_2024",
+        "username" => "vvalentim",
         "password" => "dev",
     ],
-    "database_utf" => [
-        "driver" => "mysql",
-        "host" => "localhost",
-        "name" => "webserver_project",
-        "user" => "root",
+    "db_utf" => [
+        "dsn" => "mysql:host=127.0.0.1;port=3306;dbname=webserver_2024",
+        "username" => "root",
         "password" => "",
     ]
 ];

@@ -7,32 +7,29 @@ use Core\Helpers;
 class Router {
     protected $routes = [];
 
-    protected function add($method, $uri, $controller) {
+    protected function add(string $httpMethod, string $uri, string $controller, string $action): Router {
         $uri = trim($uri, "/");
         $uri .= "/";
         $params = [];
 
-        /**
-         * This should extract all the parameters from the uri as long as it follow the
-         * pattern of being enclosed with curly braces.
-         * 
-         * If there is subsequent matches (e.g.: posts/{id}{name}/), it will be ignored till a 
-         * trailing slash is found, making only the last match a valid parameter.
-         */
+        // This should extract all the parameters from the uri as long as it follow the
+        // pattern of being enclosed with curly braces.
+        // Subsequent matches (e.g.: posts/{id}{name}/) will be ignored till a 
+        // trailing slash is found, making only the last match a valid parameter.
         if (preg_match_all("/{(?<params>[^{\/}]*)}(?=\/)/", $uri, $matches)) {
             $params = $matches['params'];
         }
 
-        /**
-         * Replace matches with a regex group and format the trailing slashes to store the 
-         * pattern, which will be used to check on incoming requests when routing.
-         */
+        
+        // Replace matches with a regex group and format the trailing slashes to store the 
+        // pattern, which will be used to check on incoming requests when routing.
         $pattern = preg_replace(["/{([^{\/}]*)}(?=\/)/", "/\//"], ["(\w*?)", "\/"], $uri);
         $pattern = "/^".$pattern."$/";
         
-        $this->routes[$method][] = [
+        $this->routes[$httpMethod][] = [
             "uri" => $uri,
             "controller" => $controller,
+            "action" => $action,
             "params" => $params,
             "pattern" => $pattern
         ];
@@ -40,48 +37,51 @@ class Router {
         return $this;
     }
 
-    public function get($uri, $controller) {
-        return $this->add("GET", $uri, $controller);
+    public function get(string $uri, string $controller, string $action = "view"): Router {
+        return $this->add("GET", $uri, $controller, $action);
     }
     
-    public function post($uri, $controller) {
-        return $this->add("POST", $uri, $controller);
+    public function post(string $uri, string $controller, string $action): Router {
+        return $this->add("POST", $uri, $controller, $action);
     }
     
-    public function delete($uri, $controller) {
-        return $this->add("DELETE", $uri, $controller);
+    public function delete(string $uri, string $controller, string $action): Router {
+        return $this->add("DELETE", $uri, $controller, $action);
     }
     
-    public function put($uri, $controller) {
-        return $this->add("PUT", $uri, $controller);
+    public function put(string $uri, string $controller, string $action): Router {
+        return $this->add("PUT", $uri, $controller, $action);
     }
     
-    public function patch($uri, $controller) {
-        return $this->add("PATCH", $uri, $controller);
+    public function patch(string $uri, string $controller, string $action): Router {
+        return $this->add("PATCH", $uri, $controller, $action);
     }
 
-    protected function abort($code) {
+    protected function abort(int $code = 404): mixed {
         http_response_code($code);
         
-        return require(Helpers::getSourcePath()."/views/errors/{$code}.php");
+        return require(Helpers::getPath("views")."/errors/{$code}.php");
     }
 
-    public function route($method, $uri) {
+    public function route(string $httpMethod, string $uri): mixed {
         $uri = trim($uri, "/");
         $uri .= "/";
-        $routes = $this->routes[$method] ?? [];
+        $routes = $this->routes[$httpMethod] ?? [];
 
         foreach($routes as $route) {
             if (preg_match($route["pattern"], $uri, $matches)) {
                 array_shift($matches);
 
-                $controller = $route["controller"];
                 $params = array_combine($route["params"], $matches);
+                $controllerClass = $route["controller"];
+                $controllerMethod = $route["action"];
 
-                return new $controller($method, $params);
+                $controller = new $controllerClass($httpMethod, $params);
+
+                return call_user_func(array($controller, $controllerMethod));
             }
         }
 
-        return $this->abort(404);
+        return $this->abort();
     }
 }

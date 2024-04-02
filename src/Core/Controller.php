@@ -3,34 +3,45 @@
 namespace Core;
 
 abstract class Controller {
-    protected $viewPath;
-    protected $httpMethod;
-    protected $httpParams;
+    protected $view;
 
+    protected $model;
+
+    protected $httpMethod;
+
+    protected $httpParams;
+    
     protected $pageAttributes = [];
 
-    protected abstract function run();
+    public abstract function view();
     
-    protected function __construct($viewPath, $httpMethod, $httpParams) {
-        $this->viewPath = $viewPath;
+    protected function __construct($view, $model, $httpMethod, $httpParams) {
+        $this->view = $view;
+        $this->model = $model;
         $this->httpMethod = $httpMethod;
         $this->httpParams = $httpParams;
-
-        $this->run();
     }
 
-    protected function setAttribute($key, $value) {
-        $this->pageAttributes[$key] = $value;
-    }
-
-    protected function getHttpParam($key) {
+    protected function getHttpParam($key): string|null {
         return $this->httpParams[$key] ?? null;
     }
 
-    public function render() {
+    protected function setAttribute($key, $value): void {
+        $this->pageAttributes[$key] = $value;
+    }
+
+    protected function redirect($uri, $code = 302): void {
+        http_response_code($code);
+        
+        header("Location: {$uri}");
+        
+        exit();
+    }
+
+    protected function render(): void {
         extract($this->pageAttributes);
 
-        require($this->viewPath);
+        require($this->view);
 
         exit();
     }

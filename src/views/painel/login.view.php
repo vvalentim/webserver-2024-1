@@ -3,14 +3,14 @@
         <div class="row h-100 justify-content-center">
             <div class="col-sm-4 d-flex flex-column justify-content-center">
                 <div class="w-100 mb-5 text-center">
-                    <h2>Acesso de colaboradores</h2>
+                    <h3>Acesso de colaboradores</h3>
                 </div>
                 <form method="POST" class="w-100">
                     <div class="mb-4">
                         <label for="username" class="form-label fw-semibold">Usuário</label>
                         <input type="text" class="form-control" id="username" name="username">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-2">
                         <div class="d-flex flex-row justify-content-between">
                             <label for="password" class="form-label fw-semibold">Senha</label>
                             <span class="form-text">
@@ -21,10 +21,10 @@
                     </div>
 
                     <?php if (isset($login_error_message)) : ?>
-                    <div class="form-text"><?= $login_error_message ?></div>
+                    <div class="form-text text-danger fw-semibold"><?= $login_error_message ?></div>
                     <?php endif; ?>
 
-                    <button type="submit" class="w-100 btn btn-primary fw-semibold">Entrar</button>
+                    <button type="submit" class="w-100 btn btn-primary fw-semibold mt-2">Entrar</button>
                 </form>
             </div>
         </div>

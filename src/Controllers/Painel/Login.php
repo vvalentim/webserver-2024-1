@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers\Dashboard;
+namespace Controllers\Painel;
 
 use Core\App;
 use Core\Controller;
@@ -12,7 +12,7 @@ use Models\User;
 class Login extends Controller {
     public function __construct($method, $params) {
         parent::__construct(
-            Helpers::getPath("views")."/dashboard/login.view.php",
+            Helpers::getPath("views")."/painel/login.view.php",
             new User(App::resolve(Database::class)),
             $method,
             $params
@@ -26,7 +26,7 @@ class Login extends Controller {
 
     public function authenticate() {
         if ($this->isAuthenticated()) {
-            $this->redirect("/dashboard");
+            $this->redirect("/painel");
         }
 
         $this->setAttribute("title", "Painel administrativo");
@@ -52,12 +52,12 @@ class Login extends Controller {
         ];
         $_SESSION["authenticated"] = true;
 
-        $this->redirect("/dashboard");
+        $this->redirect("/painel");
     }
     
     public function view() {
         if ($this->isAuthenticated()) {
-            $this->redirect("/dashboard");
+            $this->redirect("/painel");
         }
 
         $this->setAttribute("title", "Acesso de colaboradores");

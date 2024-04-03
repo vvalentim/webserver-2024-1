@@ -10,22 +10,24 @@ This code base is inteded for development only.
 
 The project will consist of three phases which will be separated on their respective branches, this may change the requirements on environment/dependencies.
 
-### Environment
+### Tested environment
 
 1. Ubuntu 22.04.4 LTS
 2. PHP 8.1.2
+3. Apache/2.4.52 (Ubuntu)
 
 ### Installation and getting started
+
+```
+git clone https://github.com/vvalentim/webserver-2024-1.git
+```
 
 #### If you're running the PHP builtin web server:
 
 ```
-apt install php8.1
-
-git clone https://github.com/vvalentim/webserver-2024-1.git
 cd webserver-2024-1/
 
-php -S localhost:8080 dev-server.php
+php -S localhost:8080 -t public/ dev-server.php
 ```
 
 #### If you're running Apache:
@@ -44,5 +46,18 @@ Then you will need to change the AllowOverride directive on your virtual host co
     Options Indexes FollowSymLinks
     AllowOverride All
     Require all granted
+</Directory>
+```
+
+Ideally you should configure the document root and directory to point to the **public** folder like:
+
+```
+ServerAdmin webmaster@localhost
+DocumentRoot /home/user/projects/webserver-2024-1/public
+
+<Directory /home/user/projects/webserver-2024-1/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
 </Directory>
 ```

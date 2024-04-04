@@ -1,7 +1,7 @@
 <?php
 
 $_sidebarConfig = [
-    "items" => [
+    "navItems" => [
         [ 
             "text" => "Início", 
             "href" => "/painel", 

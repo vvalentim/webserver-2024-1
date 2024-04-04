@@ -32,14 +32,12 @@ php -S localhost:8080 -t public/ dev-server.php
 
 #### Para execução com o servidor Apache:
 
-Primeiro, é necessário habilitar o módulo de de reescrita do Apache:
+Primeiro, é necessário habilitar o módulo de reescrita do Apache:
 
 ```
 a2enmod rewrite
 systemctl restart apache2
 ```
-
-Then you will need to change the AllowOverride directive on your virtual host configuration file, it should look like this:
 
 Em seguida, alterar a diretiva *AllowOverride* para *All* no seu arquivo de configuração da sua *virtual host*, ficará parecido com:
 

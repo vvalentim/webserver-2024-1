@@ -1,4 +1,4 @@
-<?php require(__DIR__."/../header.view.php"); ?>
+<?php require(__DIR__."/../html.start.php"); ?>
 
     <main class="container-sm vh-100">
         <div class="row h-100 justify-content-center">
@@ -14,4 +14,4 @@
         </div>
     </main>
     
-<?php require(__DIR__."/../footer.view.php"); ?>
+<?php require(__DIR__."/../html.end.php"); ?>

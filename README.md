@@ -1,48 +1,63 @@
-## Introduction
+## Introdução
 
-The goal of this project is to create a web application as an educational assessment for the classes of _Desenvolvimento Web Servidor_ during the first semester of 2024.
+O objetivo desse projeto é criar uma aplicação web como um exercício avaliativo para a disciplina de _desenvolvimento web servidor_ durante o primeiro semestre de 2024.
 
-The choosen theme for this project is _Sistema Web para Imobiliárias_.
+O tema escolhido para o projeto é _sistema web para imobiliárias_.
 
-This code base is inteded for development only.
+Os participantes desse projeto são: João Victor Valentim e Guilherme Czarnecki Oconoski.
 
-### Project organization
+### Organização do projeto
 
-The project will consist of three phases which will be separated on their respective branches, this may change the requirements on environment/dependencies.
+Esse projeto vai consistir em três etapas, onde o código será separado após cada entrega. Dessa forma o ambiente, as dependências e instruções podem variar de acordo com cada etapa do projeto.
 
-### Environment
+### Ambientes testados
 
-1. Ubuntu 22.04.4 LTS
+1. Ubuntu 22.04.4 LTS (WSL2)
 2. PHP 8.1.2
+3. Apache/2.4.52 (Ubuntu)
 
-### Installation and getting started
-
-#### If you're running the PHP builtin web server:
+### Instalação e execução
 
 ```
-apt install php8.1
-
 git clone https://github.com/vvalentim/webserver-2024-1.git
+```
+
+#### Para execução com o servidor do PHP:
+
+```
 cd webserver-2024-1/
 
-php -S localhost:8080 dev-server.php
+php -S localhost:8080 -t public/ dev-server.php
 ```
 
-#### If you're running Apache:
+#### Para execução com o servidor Apache:
 
-First you will need to enable the rewrite module with:
+Primeiro, é necessário habilitar o módulo de reescrita do Apache:
 
 ```
 a2enmod rewrite
 systemctl restart apache2
 ```
 
-Then you will need to change the AllowOverride directive on your virtual host configuration file, it should look like this:
+Em seguida, alterar a diretiva *AllowOverride* para *All* no seu arquivo de configuração da sua *virtual host*, ficará parecido com:
 
 ```
 <Directory /var/www/html>
     Options Indexes FollowSymLinks
     AllowOverride All
     Require all granted
+</Directory>
+```
+
+Por fim, configure o *document root* e *directory* para apontar para a pasta *public* do projeto, tal como:
+
+```
+ServerAdmin webmaster@localhost
+DocumentRoot /home/user/projects/webserver-2024-1/public
+
+<Directory /home/user/projects/webserver-2024-1/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
 </Directory>
 ```

@@ -1,0 +1,12 @@
+# Enable he RewriteEngine which will route the requests
+RewriteEngine On
+
+# Define the base route
+RewriteBase /
+
+# If the directory or file on URI does not exist, use the rewrite rule
+RewriteCond %{REQUEST_FILENAME} !-d       
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Rewrite rule, redirect to the index.php 
+RewriteRule ^(.+)$ index.php [QSA,L]

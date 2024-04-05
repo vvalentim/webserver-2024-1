@@ -1,7 +1,7 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
 <?php require(__DIR__."/mock.data.php"); ?>
 
-    <div class="d-flex vh-100">
+    <div class="d-flex min-vh-100">
         <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
         <div class="container px-4">
             <?php require(__DIR__."/../components/header.php"); ?>
@@ -24,8 +24,8 @@
                                 </select>
                             </div>
                             <div class="col-md">
-                                <label class="form-label text-sm" for="vinculo">Tipo</label>
-                                <select class="form-select form-select-sm" id="vinculo">
+                                <label class="form-label text-sm" for="tipoPessoa">Tipo</label>
+                                <select class="form-select form-select-sm" id="tipoPessoa">
                                     <option selected>Selecione o tipo de pessoa</option>
                                     <option value="colaborador">Pessoa Física</option>
                                     <option value="cliente">Pessoa Jurídica</option>
@@ -34,8 +34,13 @@
                         </div>
                         
                         <div class="d-flex">
-                            <input type="text" class="form-control form-control-sm" placeholder="Busque pelo nome, telefone ou e-mail">
-                            <button type="button" class="btn btn-sm btn-primary ms-2">Buscar</button>
+                            <div class="flex-grow-1 flex-shrink-1">
+                                <input type="text" class="form-control form-control-sm" placeholder="Busque pelo nome, telefone ou e-mail">
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary ms-2">
+                                <i class="bi bi-search me-1"></i>
+                                <span>Buscar</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -43,7 +48,13 @@
                 <div class="row bg-light rounded py-3 my-4">
                     <div class="col">
                         <div>
-                            <h5>Pessoas</h5>
+                            <div class="d-flex justify-content-between">
+                                <h5>Pessoas</h5>
+                                <a type="button" class="btn btn-sm btn-primary ms-2" href="/painel/pessoas/cadastrar">
+                                    <i class="bi bi-plus-lg align-middle me-1"></i>
+                                    <span>Nova pessoa</span>
+                                </a>
+                            </div>
                             <hr>
                         </div>
                         <table class="table table-sm table-secondary table-striped table-responsive rounded" style="font-size: 14px;">

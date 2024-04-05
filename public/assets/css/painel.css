@@ -9,7 +9,8 @@ html {
 }
 
 #sidebar {
-  min-height:350px; width: 250px;
+  min-height: 350px; 
+  width: 250px;
 }
 
 .navbar-toggler {

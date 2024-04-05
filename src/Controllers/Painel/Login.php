@@ -10,15 +10,6 @@ use Core\Helpers;
 use Models\User;
 
 class Login extends Controller {
-    public function __construct($method, $params) {
-        parent::__construct(
-            Helpers::getPath("views")."/painel/login.view.php",
-            new User(App::resolve(Database::class)),
-            $method,
-            $params
-        );
-    }
-
     public function isAuthenticated() {
         // TODO: validate session token and user identification
         return $_SESSION["authenticated"] ?? false;
@@ -29,6 +20,7 @@ class Login extends Controller {
             $this->redirect("/painel");
         }
 
+        $this->setView(Helpers::getPath("views")."/painel/login.view.php");
         $this->setAttribute("title", "Painel administrativo");
 
         $username = $_POST["username"] ?? "";
@@ -38,6 +30,8 @@ class Login extends Controller {
             $this->setAttribute("login_error_message", "Preencha os campos usuário e senha.");
             $this->render();
         }
+
+        $this->setModel(new User(App::resolve(Database::class)));
         
         // TODO: validate input
         if (!$this->model->compare($username, $password)) {
@@ -60,6 +54,7 @@ class Login extends Controller {
             $this->redirect("/painel");
         }
 
+        $this->setView(Helpers::getPath("views")."/painel/login.view.php");
         $this->setAttribute("title", "Acesso de colaboradores");
         $this->render();
     }

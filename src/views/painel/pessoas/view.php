@@ -18,29 +18,31 @@
                             <div class="col-md">
                                 <label class="form-label" for="vinculo">Vínculo</label>
                                 <select class="form-select form-select-sm" id="vinculo">
-                                    <option selected>Selecione o vínculo</option>
-                                    <option value="colaborador">Colaborador</option>
+                                    <option selected>Selecione o tipo de vínculo</option>
                                     <option value="cliente">Cliente</option>
+                                    <option value="colaborador">Colaborador</option>
                                 </select>
                             </div>
                             <div class="col-md">
-                                <label class="form-label text-sm" for="tipoPessoa">Tipo</label>
-                                <select class="form-select form-select-sm" id="tipoPessoa">
+                                <label class="form-label text-sm" for="tipo-pessoa">Tipo</label>
+                                <select class="form-select form-select-sm" id="tipo-pessoa">
                                     <option selected>Selecione o tipo de pessoa</option>
-                                    <option value="colaborador">Pessoa Física</option>
-                                    <option value="cliente">Pessoa Jurídica</option>
+                                    <option value="fisica">Pessoa Física</option>
+                                    <option value="juridica">Pessoa Jurídica</option>
                                 </select>
                             </div>
                         </div>
-                        
-                        <div class="d-flex">
-                            <div class="flex-grow-1 flex-shrink-1">
+
+                        <div class="row g-2">
+                            <div class="col">
                                 <input type="text" class="form-control form-control-sm" placeholder="Busque pelo nome, telefone ou e-mail">
                             </div>
-                            <button type="button" class="btn btn-sm btn-primary ms-2">
-                                <i class="bi bi-search me-1"></i>
-                                <span>Buscar</span>
-                            </button>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-search me-1"></i>
+                                    <span>Buscar</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,7 +68,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($_mockData as $pessoa) : ?>
+                                <?php foreach($_mockData["view"] as $pessoa) : ?>
                                 <tr>
                                     <td><?= $pessoa["nome"]; ?></td>
                                     <td>

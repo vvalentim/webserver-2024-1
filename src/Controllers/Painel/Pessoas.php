@@ -6,6 +6,14 @@ use Core\Controller;
 use Core\Helpers;
 
 class Pessoas extends Controller {
+    public function editar() {
+        // TODO: verificar se o id da pessoa existe
+        $this->setView(Helpers::getPath("views")."/painel/pessoas/editar.php");
+        $this->setAttribute("navActiveUri", "/painel/pessoas");
+        $this->setAttribute("idPessoa", $this->httpParams["idPessoa"]);
+        $this->render();
+    }
+
     public function cadastrar() {
         $this->setView(Helpers::getPath("views")."/painel/pessoas/cadastrar.php");
         $this->setAttribute("navActiveUri", "/painel/pessoas");

@@ -23,3 +23,7 @@ html {
   width: 24px;
   height: 24px;
 }
+
+#cadastro-telefones > .wrapper-telefone:not(:last-child) {
+  margin-bottom: 1rem;
+}

@@ -15,19 +15,25 @@ abstract class Controller {
 
     public abstract function view();
     
-    protected function __construct($view, $model, $httpMethod, $httpParams) {
-        $this->view = $view;
-        $this->model = $model;
+    public function __construct($httpMethod, $httpParams) {
         $this->httpMethod = $httpMethod;
         $this->httpParams = $httpParams;
     }
 
-    protected function getHttpParam($key): string|null {
+    protected function getHttpParam(string $key): string|null {
         return $this->httpParams[$key] ?? null;
     }
 
-    protected function setAttribute($key, $value): void {
+    protected function setAttribute(string $key, string $value): void {
         $this->pageAttributes[$key] = $value;
+    }
+
+    protected function setView(string $view):void {
+        $this->view = $view;
+    }
+
+    protected function setModel(mixed $model):void {
+        $this->model = $model;
     }
 
     protected function redirect($uri, $code = 302): void {

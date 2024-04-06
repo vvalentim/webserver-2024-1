@@ -9,7 +9,8 @@ html {
 }
 
 #sidebar {
-  min-height:350px; width: 250px;
+  min-height: 350px; 
+  width: 250px;
 }
 
 .navbar-toggler {
@@ -21,4 +22,8 @@ html {
 .navbar-toggler-icon {
   width: 24px;
   height: 24px;
+}
+
+#cadastro-telefones > .wrapper-telefone:not(:last-child) {
+  margin-bottom: 1rem;
 }

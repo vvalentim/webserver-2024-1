@@ -2,28 +2,35 @@
 
 $_mockData = [
     "view" => [
-        [ 
-            "nome" => "João", 
+        [
+            "id" => "1",
+            "nome" => "João da Silva", 
             "telefones" => [
-                "(42) 99999-9999"
+                "(42) 99999-9999",
+                "(42) 99999-0000",
             ],
-            "email" => "joao@email.com"
+            "tipoPessoa" => "fisica",
+            "tipoVinculo" => "cliente",
         ],
         [ 
+            "id" => "2",
             "nome" => "Maria", 
             "telefones" => [
                 "(42) 99999-9999"
             ],
-            "email" => "maria@email.com"
+            "tipoPessoa" => "fisica",
+            "tipoVinculo" => "cliente",
         ],
-        [ 
+        [
+            "id" => "3",
             "nome" => "Felipe", 
             "telefones" => [
                 "(42) 99999-1111",
                 "(42) 99999-1111",
                 "(42) 99999-1111"
             ],
-            "email" => "felipe@email.com"
+            "tipoPessoa" => "juridica",
+            "tipoVinculo" => "colaborador",
         ],
     ],
     "editar" => [

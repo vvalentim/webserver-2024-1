@@ -64,7 +64,9 @@
                                 <tr>
                                     <th scope="col">Nome</th>
                                     <th scope="col">Telefones</th>
-                                    <th scope="col">E-mail</th>
+                                    <th scope="col">Tipo de pessoa</th>
+                                    <th scope="col">Tipo de vínculo</th>
+                                    <th scope="col">Editar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,7 +78,13 @@
                                         <div><?= $telefone; ?></div>
                                         <?php endforeach; ?>
                                     </td>
-                                    <td><?= $pessoa["email"]; ?></td>
+                                    <td><?= $pessoa["tipoPessoa"] === "fisica" ? "Pessoa Física" : "Pessoa Jurídica"; ?></td>
+                                    <td><?= ucfirst($pessoa["tipoVinculo"]); ?></td>
+                                    <td>
+                                        <a href="/painel/pessoas/editar/<?= $pessoa["id"]; ?>">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>

@@ -11,7 +11,7 @@ $container->bind("Core\Database", function () {
     $config = require(Helpers::getPath("base")."/config.php");
     $use_db = $config["use_db"];
 
-    return new Database($config[$use_db]);
+    return Database::getInstance($config[$use_db]);
 });
 
 App::setContainer($container);

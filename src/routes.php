@@ -12,4 +12,4 @@ $router->get("/painel/pessoas/cadastrar", Controllers\Painel\Pessoas::class, "ca
 $router->get("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar");
 
 $router->get("/painel/login", Controllers\Painel\Login::class);
-$router->post("/painel/login", Controllers\Painel\Login::class, "authenticate");
+$router->post("/painel/login", Controllers\Painel\Login::class, "autenticar");

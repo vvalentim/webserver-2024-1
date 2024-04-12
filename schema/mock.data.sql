@@ -10,7 +10,7 @@ INSERT INTO usuarios (id_grupo_usuario, nome, email, hash_senha) VALUES (
     (SELECT id FROM grupos_usuarios WHERE tipo = 'corretor'),
     'corretor',
     'corretor@corretor.com',
-    '$2y$10$ZKyW7oO2KO7UQUhLbDh1oOroq98paDLr3XgY1yMIVXO3f.jR02P02' -- 12345
+    '$2y$10$07Y240rWQw66Knbhnh76Aem2va/GxhZ7lxrrRB0rM3xRVb9z3iUJq' -- 123456
 );
 
 INSERT INTO pessoas (

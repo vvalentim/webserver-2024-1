@@ -4,53 +4,55 @@ namespace Controllers\Painel;
 
 use Core\App;
 use Core\Controller;
-use Core\Database;
 use Core\Helpers;
-
-use Models\User;
+use Models\Usuarios\Usuario;
+use Models\Usuarios\UsuarioDAO;
 
 class Login extends Controller {
-    public function isAuthenticated() {
-        // TODO: validate session token and user identification
-        return $_SESSION["authenticated"] ?? false;
+    public function autenticado() {
+        // TODO: verificar se o token de sessão ainda é válido
+        return $_SESSION["autenticado"] ?? false;
     }
 
-    public function authenticate() {
-        if ($this->isAuthenticated()) {
+    public function autenticar() {
+        if ($this->autenticado()) {
             $this->redirect("/painel");
         }
 
         $this->setView(Helpers::getPath("views")."/painel/login.view.php");
         $this->setAttribute("title", "Painel administrativo");
 
-        $username = $_POST["username"] ?? "";
-        $password = $_POST["password"] ?? "";
-
-        if (empty($username) || empty($password)) {
-            $this->setAttribute("login_error_message", "Preencha os campos usuário e senha.");
-            $this->render();
-        }
-
-        $this->setModel(new User(App::resolve(Database::class)));
+        $identificador = $_POST["identificador"] ?? "";
+        $senha = $_POST["senha"] ?? "";
+        $daoUsuario = new UsuarioDAO(App::resolve(\Core\Database::class));
         
-        // TODO: validate input
-        if (!$this->model->compare($username, $password)) {
+        if (!Usuario::validarLogin($identificador, $senha)) {
             $this->setAttribute("login_error_message", "Usuário e/ou senha inválidos.");
             $this->render();
         }
 
-        // TODO: store session token and user identification
-        $_SESSION["user"] = [
-            "username" => $username, 
-            "session_token" => null
+        $usuario = $daoUsuario->buscar($identificador);
+
+        if (
+            !$usuario ||
+            !password_verify($senha, $usuario->hash_senha)
+        ) {
+            $this->setAttribute("login_error_message", "Usuário e/ou senha inválidos.");
+            $this->render();
+        }
+
+        // TODO: gerar token de sessão
+        $_SESSION["usuario"] = [
+            "id_usuario" => $usuario->id, 
+            "token_sessao" => null
         ];
-        $_SESSION["authenticated"] = true;
+        $_SESSION["autenticado"] = true;
 
         $this->redirect("/painel");
     }
     
     public function view() {
-        if ($this->isAuthenticated()) {
+        if ($this->autenticado()) {
             $this->redirect("/painel");
         }
 

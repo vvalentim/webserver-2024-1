@@ -52,16 +52,16 @@
                                     <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP">
                                 </div>
                                 <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="Logradouro" style="min-width: 330px;">
-                                </div>
-                                <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Número" style="min-width: 100px;">
+                                    <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
                                 </div>
                                 <div class="col-md-auto">
                                     <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro">
                                 </div>
                                 <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
+                                    <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="Logradouro" style="min-width: 330px;">
+                                </div>
+                                <div class="col-md-auto">
+                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Número" style="min-width: 100px;">
                                 </div>
                                 <div class="col-md-auto">
                                     <select class="form-select" id="uf" name="uf" style="min-width: 130px">

@@ -7,17 +7,17 @@
                 </div>
                 <form method="POST" class="w-100">
                     <div class="mb-4">
-                        <label for="username" class="form-label fw-semibold">Usuário</label>
-                        <input type="text" class="form-control" id="username" name="username">
+                        <label for="identificador" class="form-label fw-semibold">Nome de usuário ou e-mail</label>
+                        <input type="text" class="form-control" id="identificador" name="identificador">
                     </div>
                     <div class="mb-2">
                         <div class="d-flex flex-row justify-content-between">
-                            <label for="password" class="form-label fw-semibold">Senha</label>
+                            <label for="senha" class="form-label fw-semibold">Senha</label>
                             <span class="form-text">
                                 <a href="#" class="text-decoration-none fw-semibold">Esqueceu sua senha?</a>
                             </span>
                         </div>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="senha" name="senha">
                     </div>
 
                     <?php if (isset($login_error_message)) : ?>

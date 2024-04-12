@@ -14,7 +14,7 @@ class Database {
         extract($config);
 
         $this->connection = new PDO($dsn, $username, $password, [
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
         ]);
     }
 
@@ -33,11 +33,19 @@ class Database {
         return $this;
     }
 
-    public function findAll(): array {
+    public function findAll(string $className = ""): array {
+        if (!empty($className)) {
+            $this->statement->setFetchMode(PDO::FETCH_CLASS, $className);
+        }
+
         return $this->statement->fetchAll();
     }
 
-    public function find(): mixed {
+    public function find(string $className = ""): mixed {
+        if (!empty($className)) {
+            $this->statement->setFetchMode(PDO::FETCH_CLASS, $className);
+        }
+
         return $this->statement->fetch();
     }
 }

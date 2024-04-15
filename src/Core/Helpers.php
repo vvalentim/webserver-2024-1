@@ -36,4 +36,14 @@ class Helpers {
 
         return static::$paths[$key];
     }
+
+    public static function camelToSnakeCase(string $string): string {
+        return strtolower(
+            preg_replace(
+                "/(?<!^)([A-Z][a-z]|(?<=[a-z])[^a-z]|(?<=[A-Z])[0-9_])/",
+                "_$1",
+                $string
+            )
+        );
+    }
 }

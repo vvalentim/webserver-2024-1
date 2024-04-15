@@ -2,12 +2,15 @@
 
 namespace Core;
 
+use Exception;
 use PDO;
 use PDOStatement;
 
 class Database {
     private static ?Database $instance = null;
+
     protected PDO $connection;
+
     protected PDOStatement $statement;
 
     private function __construct(
@@ -30,26 +33,30 @@ class Database {
         return static::$instance;
     }
 
+    public function getConnection(): PDO {
+        return $this->connection;
+    }
+
+    public function runInTransaction(callable $callback): mixed {
+        $result = null;
+
+        try {
+            $this->connection->beginTransaction();
+            $result = call_user_func($callback);
+            $this->connection->commit();
+        } catch (Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
+
+        return $result;
+    }
+
     public function query(string $query, array $values): Database {
         $this->statement = $this->connection->prepare($query);
         $this->statement->execute($values);
 
         return $this;
-    }
-
-    public function buildUpdateQuery(string $table, array $fields, bool $enablePkChange = false): string {
-        // Prevents the primary key from being updated
-        if (!$enablePkChange) {
-            unset($dto["id"]);
-        }
-
-        $fields = array_map(fn($field) => "{$field} = :{$field}", $fields);
-
-        return "UPDATE {$table} SET ".join(",", $fields);
-    }
-
-    public function count(): int {
-        return $this->statement->rowCount();
     }
 
     public function findAll(string $className = ""): array {
@@ -66,5 +73,13 @@ class Database {
         }
 
         return $this->statement->fetch();
+    }
+
+    public function lastInsertId(): string|false {
+        return $this->connection->lastInsertId();
+    }
+
+    public function count(): int {
+        return $this->statement->rowCount();
     }
 }

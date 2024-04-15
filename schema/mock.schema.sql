@@ -36,7 +36,7 @@ CREATE TABLE usuarios (
     nome VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     hash_senha VARCHAR(255) NOT NULL,
-    FOREIGN KEY (id_grupo_usuario) REFERENCES grupos_usuarios (id) ON UPDATE CASCADE
+    FOREIGN KEY (id_grupo_usuario) REFERENCES grupos_usuarios (id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE imoveis (

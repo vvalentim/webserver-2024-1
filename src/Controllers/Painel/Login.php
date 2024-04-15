@@ -6,7 +6,7 @@ use Core\App;
 use Core\Controller;
 use Core\Helpers;
 use Models\Usuarios\Usuario;
-use Models\Usuarios\UsuarioDAO;
+use Models\Usuarios\UsuariosDAO;
 
 class Login extends Controller {
     public function autenticado() {
@@ -24,7 +24,7 @@ class Login extends Controller {
 
         $identificador = $_POST["identificador"] ?? "";
         $senha = $_POST["senha"] ?? "";
-        $daoUsuario = new UsuarioDAO(App::resolve(\Core\Database::class));
+        $daoUsuario = new UsuariosDAO(App::resolve(\Core\Database::class));
         
         if (!Usuario::validarLogin($identificador, $senha)) {
             $this->setAttribute("login_error_message", "Usuário e/ou senha inválidos.");

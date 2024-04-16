@@ -13,11 +13,6 @@ $_sidebarConfig = [
             "icon" => "bi-people-fill" 
         ],
         [ 
-            "text" => "Permissões", 
-            "href" => "/painel/permissoes", 
-            "icon" => "bi-shield-lock" 
-        ],
-        [ 
             "text" => "Usuários", 
             "href" => "/painel/usuarios", 
             "icon" => "bi-person-vcard" 

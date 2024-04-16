@@ -9,13 +9,13 @@ use Models\Usuarios\Usuario;
 use Models\Usuarios\UsuariosDAO;
 
 class Login extends Controller {
-    public function autenticado() {
+    public static function autenticado() {
         // TODO: verificar se o token de sessão ainda é válido
         return $_SESSION["autenticado"] ?? false;
     }
 
     public function autenticar() {
-        if ($this->autenticado()) {
+        if (static::autenticado()) {
             $this->redirect("/painel");
         }
 
@@ -43,7 +43,7 @@ class Login extends Controller {
 
         // TODO: gerar token de sessão
         $_SESSION["usuario"] = [
-            "id_usuario" => $usuario->id, 
+            "id_usuario" => $usuario->id(), 
             "token_sessao" => null
         ];
         $_SESSION["autenticado"] = true;

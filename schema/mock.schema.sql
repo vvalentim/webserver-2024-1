@@ -6,7 +6,7 @@ CREATE DATABASE webserver_2024;
 
 CREATE TABLE pessoas (
     id SERIAL PRIMARY KEY,
-    nome_razao VARCHAR(500) NOT NULL, -- nome ou razão social
+    nome_razao VARCHAR(60) NOT NULL, -- nome ou razão social
     tipo_pessoa CHAR(1) NOT NULL, -- F/J ou fisica/juridica
     tipo_vinculo CHAR(3) NOT NULL, -- CLI/COL ou cliente/colaborador
     documento VARCHAR(14) UNIQUE NOT NULL, -- CPF OU CNPJ, apenas números 

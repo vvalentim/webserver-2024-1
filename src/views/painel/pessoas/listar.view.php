@@ -1,5 +1,4 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
-<?php require(__DIR__."/mock.data.php"); ?>
 
     <div class="d-flex min-vh-100">
         <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
@@ -70,18 +69,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($_mockData["view"] as $pessoa) : ?>
+                                <?php foreach($listaPessoas as $pessoa) : ?>
                                 <tr>
-                                    <td><?= $pessoa["nome"]; ?></td>
+                                    <td><?= $pessoa->nome_razao; ?></td>
                                     <td>
-                                        <?php foreach($pessoa["telefones"] as $telefone) : ?>
-                                        <div><?= $telefone; ?></div>
+                                        <?php foreach($pessoa->telefones as $telefone) : ?>
+                                        <div><?= $telefone ?></div>
                                         <?php endforeach; ?>
                                     </td>
-                                    <td><?= $pessoa["tipoPessoa"] === "fisica" ? "Pessoa Física" : "Pessoa Jurídica"; ?></td>
-                                    <td><?= ucfirst($pessoa["tipoVinculo"]); ?></td>
+                                    <td><?= $pessoa->tipo_pessoa === "F" ? "Pessoa Física" : "Pessoa Jurídica"; ?></td>
+                                    <td><?= $pessoa->tipo_vinculo === "CLI" ? "Cliente" : "Colaborador"; ?></td>
                                     <td>
-                                        <a href="/painel/pessoas/editar/<?= $pessoa["id"]; ?>">
+                                        <a href="/painel/pessoas/editar/<?= $pessoa->id(); ?>">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                     </td>

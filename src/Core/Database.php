@@ -67,7 +67,7 @@ class Database {
         return $this->statement->fetchAll();
     }
 
-    public function find(string $className = ""): mixed {
+    public function find(string $className = "", int $fetchMode = PDO::FETCH_DEFAULT): mixed {
         if (!empty($className)) {
             $this->statement->setFetchMode(PDO::FETCH_CLASS, $className);
         }

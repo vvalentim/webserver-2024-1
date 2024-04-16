@@ -37,13 +37,16 @@ class Helpers {
         return static::$paths[$key];
     }
 
-    public static function camelToSnakeCase(string $string): string {
-        return strtolower(
-            preg_replace(
-                "/(?<!^)([A-Z][a-z]|(?<=[a-z])[^a-z]|(?<=[A-Z])[0-9_])/",
-                "_$1",
-                $string
-            )
-        );
+    // Code from: https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-snake-case, authored by @xiaojing.
+    public static function camelToSnake($camel): string {
+        $snake = preg_replace('/[A-Z]/', '_$0', $camel);
+        $snake = strtolower($snake);
+        $snake = ltrim($snake, '_');
+        
+        return $snake;
+    }
+
+    public static function onlyNumbersAsString(string $string): string {
+        return preg_replace("/\D/", "", $string);
     }
 }

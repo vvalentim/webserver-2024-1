@@ -1,6 +1,8 @@
 <?php
 
 use Core\Helpers;
+use Core\Validator;
+use Models\Usuarios\Usuario;
 
 error_reporting(E_ALL);
 ini_set("display_errors", true);

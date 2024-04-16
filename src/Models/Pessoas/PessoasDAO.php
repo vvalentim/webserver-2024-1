@@ -3,7 +3,6 @@
 namespace Models\Pessoas;
 
 use Core\Database;
-use Core\Helpers;
 use Core\QueryBuilder;
 use Exception;
 use PDOException;
@@ -14,8 +13,12 @@ class PessoasDAO {
     ) {}
 
     public function buscarTelefones(int $idPessoa): array|bool {
-        $query = "SELECT * FROM telefones WHERE id_pessoa = :id_pessoa ORDER BY id ASC";
-        $telefones = $this->db->query($query, ["id_pessoa" => $idPessoa])->findAll(Telefone::class);
+        $query = "SELECT numero FROM telefones WHERE id_pessoa = :id_pessoa ORDER BY id ASC";
+        $telefones = $this->db->query($query, ["id_pessoa" => $idPessoa])->findAll();
+
+        if (!empty($telefones)) {
+            $telefones = array_map(fn($telefone) => $telefone->numero, $telefones);
+        }
 
         return $telefones;
     }
@@ -26,7 +29,7 @@ class PessoasDAO {
         $pessoas = $this->db->query($query, [])->findAll(Pessoa::class);
 
         foreach ($pessoas as $pessoa) {
-            $pessoa->telefones = $this->buscarTelefones($pessoa->id);
+            $pessoa->telefones = $this->buscarTelefones($pessoa->id());
         }
 
         return $pessoas;
@@ -67,7 +70,7 @@ class PessoasDAO {
         $pessoas = $this->db->query($query, $parametros)->findAll(Pessoa::class);
         
         foreach($pessoas as $pessoa) {
-            $pessoa->telefones = $this->buscarTelefones($pessoa->id);
+            $pessoa->telefones = $this->buscarTelefones($pessoa->id());
         }
 
         return $pessoas;
@@ -85,7 +88,7 @@ class PessoasDAO {
         ])->find(Pessoa::class);
         
         if ($pessoa instanceof Pessoa) {
-            $pessoa->telefones = $this->buscarTelefones($pessoa->id);
+            $pessoa->telefones = $this->buscarTelefones($pessoa->id());
 
             return $pessoa;
         }
@@ -137,6 +140,8 @@ class PessoasDAO {
             $resultado = $this->db->runInTransaction(function() use (&$dto) {
                 $set = [];
                 $parametros = [];
+                $alterouPessoa = false;
+                $alterouTelefones = false;
 
                 // Filtra as propriedades vazias e e define a query/campos para atualizar
                 foreach(array_filter(get_object_vars($dto)) as $propriedade => $valor) {
@@ -144,17 +149,18 @@ class PessoasDAO {
                     $parametros[$propriedade] = $valor;
                 }
                 
-                $queryPessoa = 
-                    "UPDATE pessoas ".
-                    "SET ".join(", ", $set)." ".
-                    "WHERE id = :identificador";
+                // Verifica se será necessário alterar o registro
+                if (count($parametros)) {
+                    $queryPessoa = 
+                        "UPDATE pessoas ".
+                        "SET ".join(", ", $set)." ".
+                        "WHERE id = :identificador";
 
-                $alterouPessoa = $this->db->query($queryPessoa, [
-                    ...$parametros,
-                    "identificador" => $dto->id(),
-                ])->count();
-
-                $alterouTelefones = 0;
+                    $alterouPessoa = $this->db->query($queryPessoa, [
+                        ...$parametros,
+                        "identificador" => $dto->id(),
+                    ])->count();
+                }
 
                 // Verifica se será necessário alterar os telefones
                 if (count($dto->telefones())) {

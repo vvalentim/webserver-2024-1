@@ -4,12 +4,21 @@ use Core\Router;
 
 $router = new Router();
 
-// Routes definition
 $router->get("/painel", Controllers\Painel\Inicio::class);
 
-$router->get("/painel/pessoas", Controllers\Painel\Pessoas::class);
-$router->get("/painel/pessoas/cadastrar", Controllers\Painel\Pessoas::class, "cadastrar");
-$router->get("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar");
+# Pessoas
+$router->
+    get("/painel/pessoas", Controllers\Painel\Pessoas::class)->
 
-$router->get("/painel/login", Controllers\Painel\Login::class);
-$router->post("/painel/login", Controllers\Painel\Login::class, "autenticar");
+    get("/painel/pessoas/cadastrar", Controllers\Painel\Pessoas::class, "cadastrar")->
+    post("/painel/pessoas/cadastrar", Controllers\Painel\Pessoas::class, "cadastrar")->
+
+    get("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar")->
+    patch("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar")->
+    
+    get("/painel/pessoas/deletar/{idPessoa}", Controllers\Painel\Pessoas::class, "deletar");
+
+# Login
+$router->
+    get("/painel/login", Controllers\Painel\Login::class)->
+    post("/painel/login", Controllers\Painel\Login::class, "autenticar");

@@ -47,16 +47,16 @@
                             <tbody>
                                 <?php foreach($leads as $lead) : ?>
                                 <tr>
-                                    <td><?= $lead["name"]; ?></td>
+                                    <td><?= $lead->name; ?></td>
                                     <td>
-                                        <?= $lead["phone"] ?>
+                                        <?= $lead->phone ?>
                                     </td>
-                                    <td><?= $lead["email"]; ?></td>
-                                    <td><?= $lead["subject"]; ?></td>
-                                    <td><?= $lead["message"] ? $lead["message"] :  'Vazio'; ?></td>
+                                    <td><?= $lead->email; ?></td>
+                                    <td><?= $lead->subject; ?></td>
+                                    <td><?= $lead->message ?? "Vazio"; ?></td>
                                     <td>
-                                            <a href="javascript:void(0)" onclick="removerLead(<?= $lead['id'] ?>)"><i class="text-danger bi bi-trash me-1"></i></a>
-                                        </td>
+                                        <a href="javascript:void(0)" onclick="removerLead(<?= $lead->id; ?>)"><i class="text-danger bi bi-trash me-1"></i></a>
+                                    </td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>

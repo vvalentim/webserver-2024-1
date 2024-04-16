@@ -1,4 +1,6 @@
 <?php require (__DIR__ . "/../html.start.php"); ?>
+
+
 <main class="container-fluid mt-4 p-0">
     <?php require (__DIR__ . "/components/site-header.php"); ?>
     <section class="position-relative pt-0">
@@ -181,5 +183,9 @@
         </div>
     </section>
 </main>
+
 <?php require (__DIR__ . "/components/site-footer.php"); ?>
+
+<script src="/assets/js/site-ajax.js" defer></script>
+
 <?php require (__DIR__ . "/../html.end.php"); ?>

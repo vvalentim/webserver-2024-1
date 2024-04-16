@@ -27,10 +27,10 @@ $_sidebarConfig = [
             "href" => "/painel/leads", 
             "icon" => "bi-chat-dots" 
         ],
-        [ 
-            "text" => "Oportunidades", 
-            "href" => "/painel/oportunidades", 
-            "icon" => "bi-kanban" 
-        ],
+        // [ 
+        //     "text" => "Oportunidades", 
+        //     "href" => "/painel/oportunidades", 
+        //     "icon" => "bi-kanban" 
+        // ],
     ]
 ];

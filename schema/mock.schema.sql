@@ -70,5 +70,5 @@ CREATE TABLE leads (
 	phone VARCHAR(16) NOT NULL,
 	email VARCHAR(200) NOT NULL,
 	subject VARCHAR(100) NOT NULL,
-	message TEXT,
+	message TEXT
 );

@@ -80,6 +80,7 @@ class Pessoas extends Controller {
         }
         
         $this->setView(Helpers::getPath("views")."/painel/pessoas/editar.view.php");
+        $this->setAttribute("page_layout_css", "painel");
         $this->setAttribute("title", "Painel - Editar cadastro de pessoa");
         $this->setAttribute("navActiveUri", "/painel/pessoas");
         $this->render();
@@ -112,6 +113,7 @@ class Pessoas extends Controller {
         }
 
         $this->setView(Helpers::getPath("views")."/painel/pessoas/cadastrar.view.php");
+        $this->setAttribute("page_layout_css", "painel");
         $this->setAttribute("title", "Painel - Cadastro de pessoas");
         $this->setAttribute("navActiveUri", "/painel/pessoas");
         $this->render();
@@ -146,6 +148,7 @@ class Pessoas extends Controller {
         }
         
         $this->setView(Helpers::getPath("views")."/painel/pessoas/listar.view.php");
+        $this->setAttribute("page_layout_css", "painel");
         $this->setAttribute("title", "Painel - Pessoas");
         $this->setAttribute("navActiveUri", "/painel/pessoas");
         $this->render();

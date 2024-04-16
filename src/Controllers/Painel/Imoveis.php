@@ -9,11 +9,21 @@ use Core\Helpers;
 use Models\Immobile;
 
 class Imoveis extends Controller {
+    public function __construct(
+        protected string $httpMethod, 
+        protected array $httpParams,
+    ) {
+        parent::__construct($httpMethod, $httpParams);
 
-    // $pessoaModel = new Pessoa();
+        // TODO: middleware de autenticação/autorização
+        if (!Login::autenticado()) {
+            parent::redirect("/painel/login", 401);
+        }
+    }
 
     public function editar() {
         // TODO: verificar se o id do imovel existe
+        $this->setAttribute("page_layout_css", "painel");
         $this->setView(Helpers::getPath("views")."/painel/imoveis/editar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
         $this->setAttribute("idImovel", $this->httpParams["idImovel"]);
@@ -21,6 +31,7 @@ class Imoveis extends Controller {
     }
 
     public function cadastrar() {
+        $this->setAttribute("page_layout_css", "painel");
         $this->setView(Helpers::getPath("views")."/painel/imoveis/cadastrar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
         $this->render();
@@ -38,6 +49,7 @@ class Imoveis extends Controller {
         $imoveis = $this->model->list($filter) ?? [];
         $this->setAttributes("imoveis", $imoveis);
 
+        $this->setAttribute("page_layout_css", "painel");
         $this->setView(Helpers::getPath("views")."/painel/imoveis/listar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
         $this->render();

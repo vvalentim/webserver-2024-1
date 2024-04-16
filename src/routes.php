@@ -5,7 +5,8 @@ use Core\Router;
 $router = new Router();
 
 # Site
-$router->get("/", Controllers\Site\Inicio::class);
+$router->get("/", Controllers\Site\Inicio::class)->
+    post("/leads/create", Controllers\Site\Lead::class, "create");
 
 # Painel
 $router->get("/painel", Controllers\Painel\Inicio::class);
@@ -23,7 +24,7 @@ $router->
     get("/painel/pessoas/deletar/{idPessoa}", Controllers\Painel\Pessoas::class, "deletar");
 
 # Leads
-$router->post("/leads/create", Controllers\Site\Lead::class, "create")->
+$router->
     get("/painel/leads", Controllers\Painel\Leads::class)->
     delete("/painel/leads/{idLead}", Controllers\Painel\Leads::class, "destroy");
     

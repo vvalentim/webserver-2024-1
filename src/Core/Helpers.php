@@ -33,6 +33,7 @@ class Helpers {
         int $code = 404, 
         string $title = "Página não encontrada", 
         string $description = "A página que você está buscando não foi encontrada.",
+        string $page_layout_css = "none",
     ) {
         http_response_code($code);
         

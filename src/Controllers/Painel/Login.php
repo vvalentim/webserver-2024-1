@@ -19,6 +19,7 @@ class Login extends Controller {
             $this->redirect("/painel");
         }
 
+        $this->setAttribute("page_layout_css", "painel");
         $this->setView(Helpers::getPath("views")."/painel/login.view.php");
         $this->setAttribute("title", "Painel administrativo");
 
@@ -56,6 +57,7 @@ class Login extends Controller {
             $this->redirect("/painel");
         }
 
+        $this->setAttribute("page_layout_css", "painel");
         $this->setView(Helpers::getPath("views")."/painel/login.view.php");
         $this->setAttribute("title", "Acesso de colaboradores");
         $this->render();

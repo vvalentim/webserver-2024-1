@@ -3,7 +3,7 @@
 $_sidebarConfig = [
     "navItems" => [
         [ 
-            "text" => "Iní­cio", 
+            "text" => "Início", 
             "href" => "/painel", 
             "icon" => "bi-back" 
         ],
@@ -26,11 +26,6 @@ $_sidebarConfig = [
             "text" => "Imóveis", 
             "href" => "/painel/imoveis", 
             "icon" => "bi-house-door-fill" 
-        ],
-        [ 
-            "text" => "Leads", 
-            "href" => "/painel/leads", 
-            "icon" => "bi-chat-dots" 
         ],
         [ 
             "text" => "Oportunidades", 

@@ -13,14 +13,32 @@ class Imoveis extends Controller {
     // $pessoaModel = new Pessoa();
 
     public function editar() {
-        // TODO: verificar se o id do imovel existe
+        $this->setModel(new Immobile(App::resolve(Database::class)));
+
+        if(isset($_GET['errors'])){
+            $this->setAttributes("errors", $_GET['errors']);
+            unset($_GET['errors']);
+        }
+
+        if(!isset($this->httpParams["idImovel"])){
+            return;
+        }
+        $id = $this->httpParams["idImovel"];
+        $imovel = $this->model->find($id);
+
         $this->setView(Helpers::getPath("views")."/painel/imoveis/editar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
-        $this->setAttribute("idImovel", $this->httpParams["idImovel"]);
+        $this->setAttributes("imovel", $imovel);
         $this->render();
     }
 
     public function cadastrar() {
+
+        if(isset($_GET['errors'])){
+            $this->setAttributes("errors", $_GET['errors']);
+            unset($_GET['errors']);
+        }
+
         $this->setView(Helpers::getPath("views")."/painel/imoveis/cadastrar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
         $this->render();
@@ -46,15 +64,40 @@ class Imoveis extends Controller {
     public function create() {
         $this->setModel(new Immobile(App::resolve(Database::class)));
 
-        // $errors = $this->model->validate();
+        $errors = $this->model->validate();
         
-        // if(!empty($errors)){
-        //     $this->jsonResponse(true, $errors);
-        // }
+        if(!empty($errors)){
+            $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
+            $redirectUrl .= strpos($redirectUrl, '?') === false ? '?' : '&';
+            $redirectUrl .= http_build_query(['errors' => $errors]);
+            header('Location: ' . $redirectUrl);
+            exit;
+        }
         
         $this->model->create();
 
         $this->setAttribute("created", true);
+        $this->redirect("/painel/imoveis");
+    }
+
+    public function update() {
+        $this->setModel(new Immobile(App::resolve(Database::class)));
+
+       $errors = $this->model->validate();
+        
+        if(!empty($errors)){
+            $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
+            $redirectUrl .= strpos($redirectUrl, '?') === false ? '?' : '&';
+            $redirectUrl .= http_build_query(['errors' => $errors]);
+            header('Location: ' . $redirectUrl);
+            exit;
+        }
+        
+        $id = $this->httpParams['idImovel'];
+        
+        $this->model->update($id);
+        
+        $this->setAttribute("updated", true);
         $this->redirect("/painel/imoveis");
     }
 

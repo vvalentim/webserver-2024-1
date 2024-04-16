@@ -1,12 +1,22 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
 <?php require(__DIR__."/mock.data.php"); ?>
-
 <div class="d-flex min-vh-100">
     <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
     <div class="container px-4">
         <?php require(__DIR__."/../components/header.php"); ?>
         <main class="container-fluid mt-4">
             <!-- Content Start -->
+
+            <?php
+                if (isset($errors)) {
+                    echo '<div class="danger card mb-4">';
+                    foreach ($errors as $e) {
+                        echo '<div>' . $e . ' *</div>';
+                    }
+                    echo '</div>';
+                }
+            ?>
+
             <div class="row bg-light rounded py-3">
                 <div class="col">
                     <div>
@@ -52,7 +62,7 @@
                                 <div class="row gy-4">
                                     <div class="col-12">
                                         <input type="text" id="titulo" class="form-control" name="titulo"
-                                            placeholder="Título do anúncio">
+                                            placeholder="Tí­tulo do anúncio">
                                     </div>
                                     <div class="col-12">
                                         <input type="number" class="form-control" id="preco" name="preco"

@@ -23,7 +23,8 @@ $router->delete("/painel/leads/{idLead}", Controllers\Painel\Leads::class, "dest
 $router->get("/painel/imoveis", Controllers\Painel\Imoveis::class);
 $router->get("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "cadastrar");
 $router->post("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "create");
-$router->get("/painel/imoveis/editar/{idMovel}", Controllers\Painel\Imoveis::class, "editar");
+$router->get("/painel/imoveis/editar/{idImovel}", Controllers\Painel\Imoveis::class, "editar");
+$router->post("/painel/imoveis/editar/{idImovel}", Controllers\Painel\Imoveis::class, "update");
 $router->delete("/painel/imoveis/{idImovel}", Controllers\Painel\Imoveis::class, "destroy");
 
 $router->get("/painel/login", Controllers\Painel\Login::class);

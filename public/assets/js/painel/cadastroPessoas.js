@@ -1,5 +1,16 @@
 import { novoElemento, toggleHabilitarElementos } from "../helpers.js";
 
+const maskTelefone = {
+  behavior: function (val) {
+    return val.replace(/\D/g, "").length === 11 ? "(00) 00000-0000" : "(00) 0000-00009";
+  },
+  options: {
+    onKeyPress: function (val, e, field, options) {
+      field.mask(maskTelefone.behavior.apply({}, arguments), options);
+    },
+  },
+};
+
 const inputTelefone = {
   tag: "input",
   atributos: {
@@ -48,6 +59,7 @@ const adicionarTelefone = () => {
 
   elBtnRemover.addEventListener("click", () => elWrapperTelefone.remove());
   elWrapperCampos.appendChild(elWrapperTelefone);
+  $('.wrapper-telefone:last-child input[type="text"]').mask(maskTelefone.behavior, maskTelefone.options);
 };
 
 const alterarTipoCampos = () => {
@@ -66,12 +78,14 @@ const alterarTipoCampos = () => {
     ".campos-cadastro input, .campos-cadastro select, .campos-cadastro button"
   );
 
-  if (select.value === "juridica") {
+  if (select.value === "J") {
     alterarPlaceholders("Razão Social", "CNPJ", "Data de Fundação");
     toggleHabilitarElementos(elementosCadastro, true);
-  } else if (select.value === "fisica") {
+    $("#documento").mask("00.000.000/0000-00", { reverse: true });
+  } else if (select.value === "F") {
     alterarPlaceholders("Nome Completo", "CPF", "Data de Nascimento");
     toggleHabilitarElementos(elementosCadastro, true);
+    $("#documento").mask("000.000.000-00", { reverse: true });
   } else {
     toggleHabilitarElementos(elementosCadastro, false);
   }
@@ -95,4 +109,8 @@ $(document).ready(() => {
 
   // Primeira chamada para habilitar/desabilitar campos baseado no valor do select
   alterarTipoCampos();
+
+  $("#nascimento").mask("00/00/0000");
+  $("#cep").mask("00000-000");
+  $('.wrapper-telefone input[type="text"]').mask(maskTelefone.behavior, maskTelefone.options);
 });

@@ -15,12 +15,15 @@ Esse projeto vai consistir em três etapas, onde o código será separado após 
 1. Ubuntu 22.04.4 LTS (WSL2)
 2. PHP 8.1.2
 3. Apache/2.4.52 (Ubuntu)
+4. PostgreSQL 14.11 (Ubuntu 14.11-0ubuntu0.22.04.1)
 
 ### Instalação e execução
 
 ```
 git clone https://github.com/vvalentim/webserver-2024-1.git
 ```
+
+Os arquivos de teste para usar o banco de dados podem ser encontrados na pasta __schema__, configure o banco e suas credenciais de acesso no arquivo __config.php__
 
 #### Para execução com o servidor do PHP:
 

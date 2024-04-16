@@ -28,6 +28,16 @@ class Helpers {
         
         exit();
     }
+
+    public static function abort(
+        int $code = 404, 
+        string $title = "Página não encontrada", 
+        string $description = "A página que você está buscando não foi encontrada.",
+    ) {
+        http_response_code($code);
+        
+        return require(static::getPath("views")."/errors/base.php");
+    }
     
     public static function getPath(string $key): string {
         if (!array_key_exists($key, static::$paths)) {
@@ -35,5 +45,18 @@ class Helpers {
         }
 
         return static::$paths[$key];
+    }
+
+    // Code from: https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-snake-case, authored by @xiaojing.
+    public static function camelToSnake($camel): string {
+        $snake = preg_replace('/[A-Z]/', '_$0', $camel);
+        $snake = strtolower($snake);
+        $snake = ltrim($snake, '_');
+        
+        return $snake;
+    }
+
+    public static function onlyNumbersAsString(string $string): string {
+        return preg_replace("/\D/", "", $string);
     }
 }

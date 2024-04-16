@@ -1,5 +1,3 @@
 .vscode
 
-/tests
-
-config.php
+config.dev.php

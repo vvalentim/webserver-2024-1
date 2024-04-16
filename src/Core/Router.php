@@ -57,12 +57,6 @@ class Router {
         return $this->add("PATCH", $uri, $controller, $action);
     }
 
-    protected function abort(int $code = 404): mixed {
-        http_response_code($code);
-        
-        return require(Helpers::getPath("views")."/errors/{$code}.php");
-    }
-
     public function route(string $httpMethod, string $uri): mixed {
         $uri = trim($uri, "/");
         $uri .= "/";
@@ -82,6 +76,6 @@ class Router {
             }
         }
 
-        return $this->abort();
+        return Helpers::abort();
     }
 }

@@ -58,6 +58,17 @@ CREATE TABLE imoveis (
     cep VARCHAR(8) NOT NULL, -- apenas números
     numero VARCHAR(30) NOT NULL,
     complemento VARCHAR(50),
+
+    imagem_path VARCHAR(255),
     
     FOREIGN KEY (id_proprietario) REFERENCES pessoas (id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE leads (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(200) NOT NULL,
+	phone VARCHAR(16) NOT NULL,
+	email VARCHAR(200) NOT NULL,
+	subject VARCHAR(100) NOT NULL,
+	message TEXT,
 );

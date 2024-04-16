@@ -56,7 +56,7 @@ class Database {
         return $result;
     }
 
-    public function query(string $query, array $values): Database {
+    public function query(string $query, array $values = []): Database {
         $this->statement = $this->connection->prepare($query);
         $this->statement->execute($values);
 

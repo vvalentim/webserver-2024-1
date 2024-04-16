@@ -24,6 +24,10 @@ abstract class Controller {
         $this->pageAttributes[$key] = $value;
     }
 
+    protected function setAttributes($key, $value): void {
+        $this->pageAttributes[$key] = $value;
+    }
+
     protected function setView(string $view):void {
         $this->view = $view;
     }
@@ -46,5 +50,12 @@ abstract class Controller {
         require($this->view);
 
         exit();
+    }
+
+    protected function jsonResponse($error, $message = 'Criado com sucesso'){
+        header('Content-Type: application/json');
+        if($error) http_response_code(500);
+        $response = array('error' => $error, 'message' => $message);
+        return json_encode($response);
     }
 }

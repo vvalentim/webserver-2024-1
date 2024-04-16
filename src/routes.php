@@ -4,6 +4,10 @@ use Core\Router;
 
 $router = new Router();
 
+# Site
+$router->get("/", Controllers\Site\Inicio::class);
+
+# Painel
 $router->get("/painel", Controllers\Painel\Inicio::class);
 
 # Pessoas
@@ -17,6 +21,18 @@ $router->
     patch("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar")->
     
     get("/painel/pessoas/deletar/{idPessoa}", Controllers\Painel\Pessoas::class, "deletar");
+
+# Leads
+$router->post("/leads/create", Controllers\Site\Lead::class, "create")->
+    get("/painel/leads", Controllers\Painel\Leads::class)->
+    delete("/painel/leads/{idLead}", Controllers\Painel\Leads::class, "destroy");
+    
+# Imóveis
+$router->get("/painel/imoveis", Controllers\Painel\Imoveis::class)->
+    get("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "cadastrar")->
+    post("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "create")->
+    get("/painel/imoveis/editar/{idMovel}", Controllers\Painel\Imoveis::class, "editar")->
+    delete("/painel/imoveis/{idImovel}", Controllers\Painel\Imoveis::class, "destroy");
 
 # Login
 $router->

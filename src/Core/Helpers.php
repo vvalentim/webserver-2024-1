@@ -28,6 +28,16 @@ class Helpers {
         
         exit();
     }
+
+    public static function abort(
+        int $code = 404, 
+        string $title = "Página não encontrada", 
+        string $description = "A página que você está buscando não foi encontrada.",
+    ) {
+        http_response_code($code);
+        
+        return require(static::getPath("views")."/errors/base.php");
+    }
     
     public static function getPath(string $key): string {
         if (!array_key_exists($key, static::$paths)) {

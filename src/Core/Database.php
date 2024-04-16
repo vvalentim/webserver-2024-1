@@ -2,9 +2,9 @@
 
 namespace Core;
 
-use Exception;
 use PDO;
 use PDOStatement;
+use Throwable;
 
 class Database {
     private static ?Database $instance = null;
@@ -18,8 +18,12 @@ class Database {
         array $pdoOptions,
     ) {
         extract($config);
-
-        $this->connection = new PDO($dsn, $username, $password, $pdoOptions);
+        
+        try {
+            $this->connection = new PDO($dsn, $username, $password, $pdoOptions);
+        } catch (Throwable $e) {
+            Helpers::abort(500, "Falha no servidor", "Ocorreu uma falha no servidor.");
+        }
     }
 
     public static function getInstance(
@@ -44,7 +48,7 @@ class Database {
             $this->connection->beginTransaction();
             $result = call_user_func($callback);
             $this->connection->commit();
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->connection->rollBack();
             throw $e;
         }

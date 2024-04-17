@@ -1,5 +1,5 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
-<?php require(__DIR__."/mock.data.php"); ?>
+<?php require(__DIR__."/view.const.php"); ?>
 
     <div class="d-flex min-vh-100">
         <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
@@ -18,17 +18,17 @@
                             <p class="fw-semibold">Tipo de cadastro</p>
                             <div class="row g-4 mb-3">
                                 <div class="col-md-auto">
-                                    <select class="form-select" id="tipo-pessoa" style="min-width: 250px;">
-                                        <option selected>Selecione o tipo de pessoa</option>
-                                        <option value="fisica">Pessoa Física</option>
-                                        <option value="juridica">Pessoa Jurídica</option>
+                                    <select class="form-select" id="tipo-pessoa" name="tipo_pessoa" style="min-width: 250px;" required>
+                                        <option value="" selected>Selecione o tipo de pessoa</option>
+                                        <option value="F">Pessoa Física</option>
+                                        <option value="J">Pessoa Jurídica</option>
                                     </select>
                                 </div>
                                 <div class="col-md-auto">
-                                    <select class="form-select" id="vinculo" style="min-width: 250px">
-                                        <option selected>Selecione o tipo de vínculo</option>
-                                        <option value="cliente">Cliente</option>
-                                        <option value="colaborador">Colaborador</option>
+                                    <select class="form-select" id="vinculo" name="tipo_vinculo" style="min-width: 250px" required>
+                                        <option value="" selected>Selecione o tipo de vínculo</option>
+                                        <option value="CLI">Cliente</option>
+                                        <option value="COL">Colaborador</option>
                                     </select>
                                 </div>
                             </div>
@@ -36,39 +36,108 @@
                             <p class="fw-semibold">Dados básicos</p>
                             <div class="row g-4 mb-4 campos-cadastro">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo ou Razão social">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="nome" name="nome_razao" 
+                                        placeholder="Nome completo ou Razão social" 
+                                        maxlength="60" 
+                                        required
+                                    >
                                 </div>
                                 <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="documento" name="documento" placeholder="CPF ou CNPJ" style="min-width: 220px;">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="documento" 
+                                        name="documento" 
+                                        placeholder="CPF ou CNPJ" 
+                                        style="min-width: 220px;" 
+                                        maxlength="18" 
+                                        required
+                                    >
                                 </div>
                                 <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="nascimento" name="nascimento" placeholder="Data de nascimento ou fundação" style="min-width: 260px">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="nascimento" 
+                                        name="data_nasc_fund" 
+                                        placeholder="Data de nascimento ou fundação" 
+                                        maxlength="10" 
+                                        style="min-width: 260px"
+                                        required
+                                    >
                                 </div>
                             </div>
                             
                             <p class="fw-semibold">Endereço</p>
                             <div class="row g-4 mb-3 campos-cadastro">
                                 <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="cep" name="cep" placeholder="CEP">
-                                </div>
-                                <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="Logradouro" style="min-width: 330px;">
-                                </div>
-                                <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="numero" name="numero" placeholder="Número" style="min-width: 100px;">
-                                </div>
-                                <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro">
-                                </div>
-                                <div class="col-md-auto">
-                                    <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="cep" 
+                                        name="cep" 
+                                        placeholder="CEP"
+                                        maxlength="9"
+                                        required
+                                    >
                                 </div>
                                 <div class="col-md-auto">
                                     <select class="form-select" id="uf" name="uf" style="min-width: 130px">
                                         <option selected>Selecione a UF</option>
-                                        <option value="PR">PR</option>
-                                        <option value="AM">AM</option>
+                                        <?php foreach($_UF as $uf) : ?>
+                                        <option value="<?= $uf; ?>"><?= $uf; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
+                                </div>
+                                <div class="col-md-auto">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="cidade" 
+                                        name="cidade" 
+                                        placeholder="Cidade"
+                                    >
+                                </div>
+                                <div class="col-md-auto">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="bairro" 
+                                        name="bairro" 
+                                        placeholder="Bairro"
+                                    >
+                                </div>
+                                <div class="col-md-auto">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="logradouro" 
+                                        name="logradouro" 
+                                        placeholder="Logradouro" 
+                                        style="min-width: 330px;"
+                                    >
+                                </div>
+                                <div class="col-md-auto">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="numero" name="numero" 
+                                        placeholder="Número" 
+                                        style="min-width: 100px;"
+                                    >
+                                </div>
+                                <div class="col-md-auto">
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        id="complemento" 
+                                        name="complemento" 
+                                        placeholder="Complemento" 
+                                        style="min-width: 150px;"
+                                    >
                                 </div>
                             </div>
                             
@@ -76,7 +145,15 @@
                                 <legend class="form-label fs-6 fw-semibold">Telefones</legend>
                                 <div id="cadastro-telefones" class="col-sm-auto">
                                     <div class="wrapper-telefone d-flex">
-                                        <input type="text" class="form-control me-2" name="telefones[]" placeholder="Telefone" style="min-width: 220px">
+                                        <input 
+                                            type="text" 
+                                            class="form-control me-2" 
+                                            name="telefones[]" 
+                                            placeholder="Telefone" 
+                                            style="min-width: 220px"
+                                            maxlength="15"
+                                            required
+                                        >
                                         <button id="btn-telefone-adicional" type="button" class="btn btn-success">
                                             <i class="bi bi-plus-lg"></i>
                                         </button>

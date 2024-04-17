@@ -9,8 +9,17 @@ use Core\Helpers;
 use Models\Immobile;
 
 class Imoveis extends Controller {
+    public function __construct(
+        protected string $httpMethod, 
+        protected array $httpParams,
+    ) {
+        parent::__construct($httpMethod, $httpParams);
 
-    // $pessoaModel = new Pessoa();
+        // TODO: middleware de autenticação/autorização
+        if (!Login::autenticado()) {
+            parent::redirect("/painel/login", 401);
+        }
+    }
 
     public function editar() {
         $this->setModel(new Immobile(App::resolve(Database::class)));
@@ -27,20 +36,21 @@ class Imoveis extends Controller {
         $imovel = $this->model->find($id);
 
         $this->setView(Helpers::getPath("views")."/painel/imoveis/editar.view.php");
+        $this->setAttribute("page_layout_css", "painel");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
         $this->setAttributes("imovel", $imovel);
         $this->render();
     }
 
     public function cadastrar() {
-
         if(isset($_GET['errors'])){
             $this->setAttributes("errors", $_GET['errors']);
             unset($_GET['errors']);
         }
-
+        
         $this->setView(Helpers::getPath("views")."/painel/imoveis/cadastrar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
+        $this->setAttribute("page_layout_css", "painel");
         $this->render();
     }
 
@@ -58,6 +68,7 @@ class Imoveis extends Controller {
 
         $this->setView(Helpers::getPath("views")."/painel/imoveis/listar.view.php");
         $this->setAttribute("navActiveUri", "/painel/imoveis");
+        $this->setAttribute("page_layout_css", "painel");
         $this->render();
     }
 

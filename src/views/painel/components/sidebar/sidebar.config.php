@@ -13,11 +13,6 @@ $_sidebarConfig = [
             "icon" => "bi-people-fill" 
         ],
         [ 
-            "text" => "Permissões", 
-            "href" => "/painel/permissoes", 
-            "icon" => "bi-shield-lock" 
-        ],
-        [ 
             "text" => "Usuários", 
             "href" => "/painel/usuarios", 
             "icon" => "bi-person-vcard" 
@@ -32,10 +27,10 @@ $_sidebarConfig = [
             "href" => "/painel/leads", 
             "icon" => "bi-chat-dots" 
         ],
-        [ 
-            "text" => "Oportunidades", 
-            "href" => "/painel/oportunidades", 
-            "icon" => "bi-kanban" 
-        ],
+        // [ 
+        //     "text" => "Oportunidades", 
+        //     "href" => "/painel/oportunidades", 
+        //     "icon" => "bi-kanban" 
+        // ],
     ]
 ];

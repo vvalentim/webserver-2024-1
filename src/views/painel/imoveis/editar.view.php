@@ -1,193 +1,172 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
-<?php 
-    require(__DIR__."/mock.data.php");
+<?php require(__DIR__."/mock.data.php"); ?>
 
-    extract($_mockData["editar"][$idPessoa]);
-?>
+<div class="d-flex min-vh-100">
+    <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
+    <div class="container px-4">
+        <?php require(__DIR__."/../components/header.php"); ?>
+        <main class="container-fluid mt-4">
+            <!-- Content Start -->
+            <?php
+                if (isset($errors)) {
+                    echo '<div class="danger card mb-4">';
+                    foreach ($errors as $e) {
+                        echo '<div>' . $e . ' *</div>';
+                    }
+                    echo '</div>';
+                }
+            ?>
+            
+            <div class="row bg-light rounded py-3">
+                <div class="col">
+                    <div>
+                        <h5>Editando imóvel</h5>
+                        <hr>
+                    </div>
 
-    <div class="d-flex min-vh-100">
-        <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
-        <div class="container px-4">
-            <?php require(__DIR__."/../components/header.php"); ?>
-            <main class="container-fluid mt-4">
-                <!-- Content Start -->
-                <div class="row bg-light rounded py-3">
-                    <div class="col">
-                        <div>
-                            <h5>Editar cadastro de pessoa</h5>
-                            <hr>
+                    <form method="POST" enctype="multipart/form-data">
+                        <p class="fw-semibold">Tipo de cadastro</p>
+                        <div class="row g-4 mb-3">
+                            <div class="col-md-auto">
+                                <select class="form-select" id="id_proprietario" name="id_proprietario"
+                                    style="min-width: 250px" value="<?= $imovel['proprietario_id'] ?>">
+                                    <option value="1">Pessoa teste</option>
+                                    <option value="2">Pessoa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-auto">
+                                <select class="form-select" id="tipo_imovel" name="tipo_imovel"
+                                    style="min-width: 250px" value="<?= $imovel['tipo_imovel'] ?>">
+                                    <option value="casa">Casa</option>
+                                    <option value="casa-cond">Casa em condomí­nio</option>
+                                    <option value="apto">Apartamento</option>
+                                    <option value="comercial">Comercial</option>
+                                    <option value="chacara">Chácara</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-auto">
+                                <select class="form-select" name="finalidade" id="finalidade" style="min-width: 250px" value="<?= $imovel['finalidade'] ?>">
+                                    <option value="v">Venda</option>
+                                    <option value="a">Aluguel</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <form method="POST">
-                            <p class="fw-semibold">Tipo de cadastro</p>
-                            <div class="row g-4 mb-3">
-                                <div class="col-md-auto">
-                                    <select class="form-select" id="tipo-pessoa" style="min-width: 250px;" data-initial-selected="<?= $tipoPessoa; ?>">
-                                        <option value="">Selecione o tipo de pessoa</option>
-                                        <option value="fisica">Pessoa Física</option>
-                                        <option value="juridica">Pessoa Jurídica</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-auto">
-                                    <select class="form-select" id="vinculo" style="min-width: 250px" data-initial-selected="<?= $tipoVinculo; ?>">
-                                        <option value="">Selecione o tipo de vínculo</option>
-                                        <option value="cliente">Cliente</option>
-                                        <option value="colaborador">Colaborador</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <p class="fw-semibold">Dados básicos</p>
-                            <div class="row g-4 mb-4 campos-cadastro">
-                                <div class="col-md">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="nome" 
-                                        name="nome" 
-                                        placeholder="Nome completo ou Razão social" 
-                                        value="<?= $nome; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="documento" 
-                                        name="documento" 
-                                        placeholder="CPF ou CNPJ" 
-                                        style="min-width: 220px;"
-                                        value="<?= $documento; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="nascimento" 
-                                        name="nascimento" 
-                                        placeholder="Data de nascimento ou fundação" 
-                                        style="min-width: 260px"
-                                        value="<?= $nascimento; ?>"
-                                    >
-                                </div>
-                            </div>
-                            
-                            <p class="fw-semibold">Endereço</p>
-                            <div class="row g-4 mb-3 campos-cadastro">
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="cep" 
-                                        name="cep" 
-                                        placeholder="CEP"
-                                        value="<?= $cep; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="logradouro" 
-                                        name="logradouro" 
-                                        placeholder="Logradouro" 
-                                        style="min-width: 330px;"
-                                        value="<?= $logradouro; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="numero" 
-                                        name="numero" 
-                                        placeholder="Número" 
-                                        style="min-width: 100px;"
-                                        value="<?= $numero; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="bairro" name="bairro" 
-                                        placeholder="Bairro"
-                                        value="<?= $bairro; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        id="cidade" name="cidade" 
-                                        placeholder="Cidade"
-                                        value="<?= $cidade; ?>"
-                                    >
-                                </div>
-                                <div class="col-md-auto">
-                                    <select class="form-select" id="uf" name="uf" style="min-width: 130px" data-initial-selected="<?= $uf; ?>">
-                                        <option value="">Selecione a UF</option>
-                                        <option value="PR">PR</option>
-                                        <option value="AM">AM</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <fieldset class="row g-2 campos-cadastro">
-                                <legend class="form-label fs-6 fw-semibold">Telefones</legend>
-                                <div id="cadastro-telefones" class="col-sm-auto">
-                                    <?php foreach($telefones as $chave => $valor) : ?>
-                                    <div class="wrapper-telefone d-flex">
-                                        <input 
-                                            type="text" 
-                                            class="form-control me-2" 
-                                            name="telefones[]" 
-                                            placeholder="Telefone" 
-                                            style="min-width: 220px"
-                                            value="<?= $valor; ?>"
-                                        >
-                                        <?php if ($chave === array_key_first($telefones)) : ?>
-                                        <button id="btn-telefone-adicional" type="button" class="btn btn-success">
-                                            <i class="bi bi-plus-lg"></i>
-                                        </button>
-                                        <?php else : ?>
-                                        <button id="btn-telefone-adicional" type="button" class="btn btn-danger">
-                                            <i class="bi bi-x-circle"></i>
-                                        </button>
-                                        <?php endif; ?>
+                        <p class="fw-semibold">Anúncio</p>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <div class="row gy-4">
+                                    <div class="col-12">
+                                        <input type="text" id="titulo" class="form-control" name="titulo"
+                                            placeholder="Tí­tulo do anúncio" value="<?= $imovel['titulo'] ?>">
                                     </div>
-                                    <?php endforeach; ?>
+                                    <div class="col-12">
+                                        <input type="number" class="form-control" id="preco" name="preco"
+                                            placeholder="Preço do imóvel ou do aluguel" value="<?= $imovel['preco'] ?>">
+                                    </div>
                                 </div>
-                            </fieldset>
-
-                            <hr>
-
-                            <div class="col-md-12">
-                                <a type="button" class="btn btn-secondary" href="/painel/pessoas">
-                                    <i class="bi bi-x-circle"></i>
-                                    <span>Cancelar</span>
-                                </a>
-                                <button type="submit" class="btn btn-primary float-end">
-                                    <i class="bi bi-floppy2-fill"></i>
-                                    <span>Editar</span>
-                                </button>
-                                <button type="button" class="btn btn-danger float-end me-2">
-                                    <i class="bi bi-trash"></i>
-                                    <span>Excluir</span>
-                                </button>
                             </div>
+                            <div class="col-md-4">
+                                <div class="col-12">
+                                    <textarea name="descricao" class="form-control" id="descricao"
+                                        placeholder="Descrição do anúncio" cols="30" rows="4"><?= $imovel['descricao'] ?></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img src="<?= str_replace("public/", "../../../", $imovel["imagem_path"]); ?>" style="max-height: 90px; width: auto;">
+                                    </div>
+                                    <div class="col-9">
+                                        <label for="imagem">Alterar imagem:</label>
+                                        <input type="file" id="imagem" class="form-control" name="imagem" accept="image/*">
+                                        <input type="hidden" id="imagem_path" class="form-control" name="imagem_path" value="<?= $imovel["imagem_path"]; ?>" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="fw-semibold">Detalhes</p>
+                        <div class="row g-4 mb-4 campos-cadastro">
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="quartos" name="quartos" value="<?= $imovel['qntd_quartos'] ?>"
+                                    placeholder="Quantidade de quartos">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="banheiros" name="banheiros"
+                                    placeholder="Quantidade de banheiros" value="<?= $imovel['qntd_banheiros'] ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="suites" name="suites"
+                                    placeholder="Quantidade de suites" value="<?= $imovel['qntd_suites'] ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="garagens" name="garagens"
+                                    placeholder="Quantidade de garagens" value="<?= $imovel['qntd_garagem'] ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="area_util" name="area_util"
+                                    placeholder="Área Útil (m2)" value="<?= $imovel['area_util'] ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="area_total" name="area_total"
+                                    placeholder="Área total (m2)" value="<?= $imovel['area_total'] ?>">
+                            </div>
+                        </div>
 
-                        </form>
+                        <?php
+                            $endereco = explode(', ', $imovel['complemento']);
+                        ?>
 
-                    </div>
+                        <p class="fw-semibold">Endereço</p>
+                        <div class="row g-4 mb-3 campos-cadastro">
+                            <div class="col-md-auto">
+                                <input type="number" maxlength="8" class="form-control" id="cep" name="cep" placeholder="CEP" value="<?= $imovel['cep'] ?>">
+                            </div>
+                            <div class="col-md-auto">
+                                <input type="text" class="form-control" id="logradouro" name="logradouro"
+                                    placeholder="Logradouro" style="min-width: 330px;" value="<?= $endereco[0] ?>">
+                            </div>
+                            <div class="col-md-auto">
+                                <input type="text" class="form-control" id="numero" name="numero" placeholder="Número"
+                                    style="min-width: 100px;" value="<?= $imovel['numero'] ?>">
+                            </div>
+                            <div class="col-md-auto">
+                                <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro" value="<?= $endereco[1] ?>">
+                            </div>
+                            <div class="col-md-auto">
+                                <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade" value="<?= $endereco[2] ?>">
+                            </div>
+                            <div class="col-md-auto">
+                                <select class="form-select" id="uf" name="uf" style="min-width: 130px" value="<?= $imovel['uf'] ?>">
+                                    <option value="PR">PR</option>
+                                    <option value="AM">AM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="col-md-12">
+                            <a type="button" class="btn btn-secondary" href="/painel/imoveis">
+                                <i class="bi bi-x-circle"></i>
+                                <span>Cancelar</span>
+                            </a>
+                            <button type="submit" class="btn btn-success float-end">
+                                <i class="bi bi-plus-lg"></i>
+                                <span>Salvar</span>
+                            </button>
+                        </div>
+
+                    </form>
+
                 </div>
-                <!-- Content End -->
-            </main>
-        </div>
+            </div>
+            <!-- Content End -->
+        </main>
     </div>
+</div>
 
-    <!-- Carrega os scripts necessários para a página com defer para aguardar a resolução das dependências -->
-    <script src="/assets/js/painel/cadastroPessoas.js" type="module" defer></script>
+<script src="/assets/js/painel/cadastroImoveis.js" type="module" defer></script>
 
 <?php require(__DIR__."/../../html.end.php"); ?>

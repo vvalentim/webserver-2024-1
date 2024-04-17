@@ -5,7 +5,9 @@ use Core\Router;
 $router = new Router();
 
 # Site
-$router->get("/", Controllers\Site\Inicio::class)->
+$router->
+    get("/", Controllers\Site\Inicio::class)->
+    
     post("/leads/create", Controllers\Site\Lead::class, "create");
 
 # Painel
@@ -29,10 +31,15 @@ $router->
     delete("/painel/leads/{idLead}", Controllers\Painel\Leads::class, "destroy");
     
 # Imóveis
-$router->get("/painel/imoveis", Controllers\Painel\Imoveis::class)->
+$router->
+    get("/painel/imoveis", Controllers\Painel\Imoveis::class)->
+    
     get("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "cadastrar")->
     post("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "create")->
+    
     get("/painel/imoveis/editar/{idMovel}", Controllers\Painel\Imoveis::class, "editar")->
+    post("/painel/imoveis/editar/{idImovel}", Controllers\Painel\Imoveis::class, "update")->
+
     delete("/painel/imoveis/{idImovel}", Controllers\Painel\Imoveis::class, "destroy");
 
 # Login

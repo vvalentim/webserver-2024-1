@@ -60,9 +60,9 @@
                                     </td>
                                     <td style="vertical-align: middle;"><?= str_replace(".", ",", $imovel["preco"]); ?></td>
                                     <td style="vertical-align: middle;"><?= $imovel["complemento"]; ?></td>
-                                    <td style="vertical-align: middle;">
-                                        <a href="javascript:void(0)" onclick="removerImovel(<?= $imovel['id'] ?>)"><i class="text-primary bi bi-pen me-1"></i></a>
-                                        <a href="javascript:void(0)" onclick="removerImovel(<?= $imovel['id'] ?>)"><i class="text-danger bi bi-trash me-1"></i></a>
+                                    <td style="vertical-align: middle; text-align: end;">
+                                        <a href="/painel/imoveis/editar/<?= $imovel["id"] ?>"><i class="text-primary bi bi-pen me-1" style="font-size: 1.5rem"></i></a>
+                                        <a href="javascript:void(0)" onclick="removerImovel(<?= $imovel['id'] ?>)"><i class="text-danger bi bi-trash me-1" style="font-size: 1.5rem"></i></a>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>

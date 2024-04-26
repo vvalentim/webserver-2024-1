@@ -20,6 +20,7 @@ class CadastroPessoaDTO {
     ) {
         // Formata a data para o padrão do banco
         $this->data_nasc_fund = DateTime::createFromFormat("d/m/Y", $data_nasc_fund)->format("Y-m-d");
+        $this->documento = $this->cep = Helpers::onlyNumbersAsString($documento);
         $this->cep = Helpers::onlyNumbersAsString($cep);
     }
 

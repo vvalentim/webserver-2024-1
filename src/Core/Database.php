@@ -13,17 +13,10 @@ class Database {
 
     protected PDOStatement $statement;
 
-    private function __construct(
-        array $config, 
-        array $pdoOptions,
-    ) {
+    private function __construct(array $config, array $pdoOptions) {
         extract($config);
         
-        try {
-            $this->connection = new PDO($dsn, $username, $password, $pdoOptions);
-        } catch (Throwable $e) {
-            Helpers::abort(500, "Falha no servidor", "Ocorreu uma falha no servidor.");
-        }
+        $this->connection = new PDO($dsn, $username, $password, $pdoOptions);
     }
 
     public static function getInstance(
@@ -56,7 +49,7 @@ class Database {
         return $result;
     }
 
-    public function query(string $query, array $values = []): Database {
+    public function query(string $query, array $values): Database {
         $this->statement = $this->connection->prepare($query);
         $this->statement->execute($values);
 
@@ -71,7 +64,7 @@ class Database {
         return $this->statement->fetchAll();
     }
 
-    public function find(string $className = "", int $fetchMode = PDO::FETCH_DEFAULT): mixed {
+    public function find(string $className = ""): mixed {
         if (!empty($className)) {
             $this->statement->setFetchMode(PDO::FETCH_CLASS, $className);
         }

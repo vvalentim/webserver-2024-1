@@ -1,48 +1,58 @@
 <?php
 
-use Core\Router;
+use Pecee\SimpleRouter\SimpleRouter as Router;
 
-$router = new Router();
-
-# Site
-$router->
-    get("/", Controllers\Site\Inicio::class)->
+# Rotas do site
+Router::group(["namespace" => "\\Controllers\\Site"], function() {
+    Router::get("/", "Inicio@view");
     
-    post("/leads/create", Controllers\Site\Lead::class, "create");
+    Router::post("/leads/create", "Lead@create");
+});
 
-# Painel
-$router->get("/painel", Controllers\Painel\Inicio::class);
-
-# Pessoas
-$router->
-    get("/painel/pessoas", Controllers\Painel\Pessoas::class)->
-
-    get("/painel/pessoas/cadastrar", Controllers\Painel\Pessoas::class, "cadastrar")->
-    post("/painel/pessoas/cadastrar", Controllers\Painel\Pessoas::class, "cadastrar")->
-
-    get("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar")->
-    patch("/painel/pessoas/editar/{idPessoa}", Controllers\Painel\Pessoas::class, "editar")->
+# Rotas do painel
+Router::group([
+    "namespace" => "\\Controllers\\Painel", 
+    "prefix" => "/painel"
+], function() {
+    # Login
+    Router::form("/login", "Login@view");
     
-    get("/painel/pessoas/deletar/{idPessoa}", Controllers\Painel\Pessoas::class, "deletar");
+    # Rotas com autenticação obrigatória
+    Router::group([], function() {
+        Router::get("/", "Inicio@view");
 
-# Leads
-$router->
-    get("/painel/leads", Controllers\Painel\Leads::class)->
-    delete("/painel/leads/{idLead}", Controllers\Painel\Leads::class, "destroy");
-    
-# Imóveis
-$router->
-    get("/painel/imoveis", Controllers\Painel\Imoveis::class)->
-    
-    get("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "cadastrar")->
-    post("/painel/imoveis/cadastrar", Controllers\Painel\Imoveis::class, "create")->
-    
-    get("/painel/imoveis/editar/{idMovel}", Controllers\Painel\Imoveis::class, "editar")->
-    post("/painel/imoveis/editar/{idImovel}", Controllers\Painel\Imoveis::class, "update")->
+        # Pessoas
+        Router::group(["prefix" => "/pessoas"], function() {
+            Router::get("/", "Pessoas@view");
 
-    delete("/painel/imoveis/{idImovel}", Controllers\Painel\Imoveis::class, "destroy");
+            Router::get("/cadastrar", "Pessoas@formCadastrar");
+            Router::post("/cadastrar", "Pessoas@cadastrar");
 
-# Login
-$router->
-    get("/painel/login", Controllers\Painel\Login::class)->
-    post("/painel/login", Controllers\Painel\Login::class, "autenticar");
+            Router::get("/editar/{idPessoa}", "Pessoas@formEditar");
+            Router::patch("/editar/{idPessoa}", "Pessoas@editar");
+
+            Router::get("/deletar/{idPessoa}", "Pessoas@deletar");
+        })->where([ "idPessoa" => "[0-9]+" ]);
+
+        # Imóveis
+        Router::group(["prefix" => "/imoveis"], function() {
+            Router::get("/", "Imoveis@view");
+
+            Router::get("/cadastrar", "Imoveis@formCadastrar");
+            Router::post("/cadastrar", "Imoveis@create");
+
+            Router::get("/editar/{idImovel}", "Imoveis@formEditar");
+            Router::post("/editar/{idImovel}", "Imoveis@update");
+
+            Router::delete("/deletar/{idImovel}", "Imoveis@destroy");
+        })->where([ "idImovel" => "[0-9]+" ]);
+
+        # Leads
+        Router::group(["prefix" => "/leads"], function() {
+            Router::get("/", "Leads@view");
+
+            Router::delete("/deletar/{idLead}", "Leads@destroy");
+        });
+
+    });
+});

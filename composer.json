@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Core\\": "src/Core",
+            "Controllers\\": "src/Controllers",
+            "Models\\": "src/Models"
+        }
+    },
+    "require": {
+        "pecee/simple-router": "^5.4"
+    }
+}

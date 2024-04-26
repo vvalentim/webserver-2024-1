@@ -17,44 +17,79 @@ class Pessoas extends Controller {
     protected PessoasDAO $daoPessoas;
     protected array $filtroParametros;
 
-    public function __construct(
-        protected string $httpMethod, 
-        protected array $httpParams,
-    ) {
-        parent::__construct($httpMethod, $httpParams);
-        
+    public function __construct() {
         $this->daoPessoas = new PessoasDAO(App::resolve(Database::class));
         $this->filtroParametros = array_keys(get_class_vars(Pessoa::class));
+    }
+    
+    public function cadastrar() {
+        try {
+            // Filtra os parametros que serão aceitos para montar o DTO
+            $parametros = input()->all($this->filtroParametros);
 
-        // TODO: middleware de autenticação/autorização
-        if (!Login::autenticado()) {
-            parent::redirect("/painel/login", 401);
+            $dto = CadastroPessoaDTO::montar($parametros);
+
+            $cadastro = $this->daoPessoas->cadastrar($dto);
+
+            if ($cadastro === null) {
+                // TODO: tratar falha no cadastro
+                throw new Exception("Falha no cadastro.");
+            }
+
+            response()->json(get_object_vars($cadastro));
+
+        } catch (Throwable $e) {
+            Helpers::dump($e->getMessage(), true);
         }
     }
 
-    protected function atualizar(Pessoa &$registro) {
+    public function editar(int $idPessoa) {
         // Filtra os parametros que serão aceitos para montar o DTO
-        $parametros = array_filter(
-            $_POST, 
-            fn($chave) => in_array($chave, $this->filtroParametros), 
-            ARRAY_FILTER_USE_KEY
-        );
-        
-        $dto = AtualizarPessoaDTO::montar($registro, $parametros);
+        $parametros = input()->all($this->filtroParametros);
 
-        $novo = $this->daoPessoas->atualizar($dto);
+        try {
+            if (!$idPessoa) {
+                throw new Exception("O id de usuário não é válido.");
+            }
 
-        // Verifica se atualizou o registro para renderizar as mudanças
-        if ($novo === null) {
-            throw new Exception("Falha ao tentar editar o cadastro.");
+            $registro = $this->daoPessoas->buscar($idPessoa);
+            $dto = AtualizarPessoaDTO::montar($registro, $parametros);
+            $novo = $this->daoPessoas->atualizar($dto);
+
+            // Verifica se atualizou o registro para renderizar as mudanças
+            if ($novo === null) {
+                throw new Exception("Falha ao tentar editar o cadastro.");
+            }
+            
+            response()->json(get_object_vars($novo));
+
+        } catch (Throwable $e) {
+            // TODO: analisar e tratar possíveis problemas
+            // TODO: abortar em caso de erro
+            Helpers::dump($e->getMessage(), true);
         }
-
-        $registro = $novo;
     }
 
-    public function editar() {
-        $idPessoa = (int) $this->httpParams["idPessoa"];
+    public function deletar(int $idPessoa) {
+        try {
+            if (!$idPessoa) {
+                throw new Exception("O id de usuário não é válido.");
+            }
+            
+            if ($this->daoPessoas->deletar($idPessoa)) {
+                response()->json([]);
+            } else {
+                throw new Exception("Nenhum registro foi deletado.");
+            }
 
+        } catch (Throwable $e) {
+            // TODO: analisar e tratar possíveis problemas
+            // TODO: abortar em caso de erro
+            Helpers::dump($e->getMessage(), true);
+        }
+    }
+
+    public function formEditar(int $idPessoa) {
         try {
             if (!$idPessoa) {
                 throw new Exception("O id de usuário não é válido.");
@@ -63,82 +98,38 @@ class Pessoas extends Controller {
             $registro = $this->daoPessoas->buscar($idPessoa);
             
             if ($registro instanceof Pessoa) {
-                // Verifica e aplica as atualizações caso o formulário tenha sido submetido
-                if ($this->httpMethod === "PATCH") {
-                    $this->atualizar($registro);
-                }
-                
                 // TODO: puxar dados do CEP por alguma API pública
                 $this->setAttribute("pessoa", $registro);
             } else {
                 throw new Exception("O cadastro com id '{$idPessoa}' não foi encontrado.");
             }
-        } catch (Throwable $e) {
-            // TODO: analisar e tratar possíveis problemas
-            // TODO: abortar em caso de erro
-            Helpers::dump($e->getMessage(), true);
-        }
-        
-        $this->setView(Helpers::getPath("views")."/painel/pessoas/editar.view.php");
-        $this->setAttribute("page_layout_css", "painel");
-        $this->setAttribute("title", "Painel - Editar cadastro de pessoa");
-        $this->setAttribute("navActiveUri", "/painel/pessoas");
-        $this->render();
-    }
-
-    public function cadastrar() {
-        // Verifica e trata os dados se o formulário for submetido
-        if ($this->httpMethod === "POST") {
-            try {
-                // Filtra os parametros que serão aceitos para montar o DTO
-                $parametros = array_filter(
-                    $_POST, 
-                    fn($chave) => in_array($chave, $this->filtroParametros), 
-                    ARRAY_FILTER_USE_KEY
-                );
-
-                $dto = CadastroPessoaDTO::montar($parametros);
-
-                $cadastro = $this->daoPessoas->cadastrar($dto);
-
-                if ($cadastro === null) {
-                    // TODO: tratar falha no cadastro
-                    throw new Exception("Falha no cadastro.");
-                }
-
-                $this->redirect("/painel/pessoas");
-            } catch (Throwable $e) {
-                Helpers::dump($e->getMessage(), true);
-            }
-        }
-
-        $this->setView(Helpers::getPath("views")."/painel/pessoas/cadastrar.view.php");
-        $this->setAttribute("page_layout_css", "painel");
-        $this->setAttribute("title", "Painel - Cadastro de pessoas");
-        $this->setAttribute("navActiveUri", "/painel/pessoas");
-        $this->render();
-    }
-
-    public function deletar() {
-        $idPessoa = (int) $this->httpParams["idPessoa"];
-
-        try {
-            if (!$idPessoa) {
-                throw new Exception("O id de usuário não é válido.");
-            }
-
-            $this->daoPessoas->deletar($idPessoa);
+            
         } catch (Throwable $e) {
             // TODO: analisar e tratar possíveis problemas
             // TODO: abortar em caso de erro
             Helpers::dump($e->getMessage(), true);
         }
 
-        $this->redirect("/painel/pessoas");
+        $this->setAttributes([
+            "page_layout_css" => "painel",
+            "title" => "Painel - Editar cadastro de pessoa",
+            "navActiveUri" => "/painel/pessoas",
+        ]);
+
+        $this->render(Helpers::getPath("views")."/painel/pessoas/editar.view.php");
+    }
+
+    public function formCadastrar() {
+        $this->setAttributes([
+            "page_layout_css" => "painel",
+            "title" => "Painel - Cadastro de pessoas",
+            "navActiveUri" => "/painel/pessoas",
+        ]);
+
+        $this->render(Helpers::getPath("views")."/painel/pessoas/cadastrar.view.php");
     }
     
     public function view() {
-
         try {
             // TODO: fazer paginação
             $this->setAttribute("listaPessoas", $this->daoPessoas->buscarTodos());
@@ -147,10 +138,12 @@ class Pessoas extends Controller {
             // TODO: abortar em caso de erro
         }
         
-        $this->setView(Helpers::getPath("views")."/painel/pessoas/listar.view.php");
-        $this->setAttribute("page_layout_css", "painel");
-        $this->setAttribute("title", "Painel - Pessoas");
-        $this->setAttribute("navActiveUri", "/painel/pessoas");
-        $this->render();
+        $this->setAttributes([
+            "page_layout_css" => "painel",
+            "title" => "Painel - Pessoas",
+            "navActiveUri" => "/painel/pessoas",
+        ]);
+
+        $this->render(Helpers::getPath("views")."/painel/pessoas/listar.view.php");
     }
 }

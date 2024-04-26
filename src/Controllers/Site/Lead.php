@@ -5,27 +5,32 @@ namespace Controllers\Site;
 use Core\App;
 use Core\Controller;
 use Core\Database;
-use Core\Helpers;
-
 use Models\LeadModel;
 
 class Lead extends Controller {
+    protected LeadModel $modelLeads;
 
-    public function view(){
-        return;
+    public function __construct() {
+        $this->modelLeads = new LeadModel(App::resolve(Database::class));
     }
 
     public function create() {
-        $this->setModel(new LeadModel(App::resolve(Database::class)));
-        
-        $errors = $this->model->validate();
+        $errors = $this->modelLeads->validate();
 
         if(!empty($errors)){
-            echo $this->jsonResponse(true, $errors);
-            return;
+            response()->json([
+                "error" => true,
+                "message" => $errors,
+            ]);
         }
         
-        $response = $this->model->create();
-        echo $this->jsonResponse(false, []);
+        $this->modelLeads->create();
+        
+        response()->json([
+            "error" => false,
+            "message" => [],
+        ]);
     }
+
+    public function view() {}
 }

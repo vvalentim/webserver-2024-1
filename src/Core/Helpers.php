@@ -5,11 +5,11 @@ namespace Core;
 use Exception;
 
 class Helpers {
-    private static $paths = [
-        "base" => __DIR__."/../..",
-        "source" => __DIR__."/..",
-        "views" => __DIR__."/../views",
-        "controllers" => __DIR__."/../Controllers",
+    public const PATHS = [
+        "base" => "/../..",
+        "source" => "/..",
+        "views" => "/../views",
+        "controllers" => "/../Controllers",
     ];
 
     public static function dump(mixed $var, bool $die = false): void {
@@ -28,24 +28,21 @@ class Helpers {
         
         exit();
     }
-
-    public static function abort(
-        int $code = 404, 
-        string $title = "Página não encontrada", 
-        string $description = "A página que você está buscando não foi encontrada.",
-        string $page_layout_css = "none",
-    ) {
-        http_response_code($code);
-        
-        return require(static::getPath("views")."/errors/base.php");
-    }
     
     public static function getPath(string $key): string {
-        if (!array_key_exists($key, static::$paths)) {
+        if (!array_key_exists($key, static::PATHS)) {
             throw new Exception("No matching key '{$key}' for paths.");
         }
 
-        return static::$paths[$key];
+        return __DIR__ . static::PATHS[$key];
+    }
+    
+    public static function abort(int $code, string $title, string $description, string $page_layout_css): void {
+        http_response_code($code);
+        
+        require(static::getPath("views")."/errors/base.php");
+
+        exit();
     }
 
     // Code from: https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-snake-case, authored by @xiaojing.

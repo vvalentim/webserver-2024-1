@@ -1,6 +1,6 @@
 function removerLead(id){
     $.ajax({
-        url: `${window.location.href}/${id}`,
+        url: `${window.location.href}/deletar/${id}`,
         type: 'DELETE',
         success: (response) => {
             window.location.reload();

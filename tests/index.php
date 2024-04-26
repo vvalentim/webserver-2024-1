@@ -1,11 +1,11 @@
 <?php
 
-use Core\Helpers;
-
 error_reporting(E_ALL);
 ini_set("display_errors", true);
 
-require(__DIR__."/../src/autoload.php");
+require(__DIR__."/../vendor/autoload.php");
+
+use Core\Helpers;
 
 class Test {
     public function __construct(

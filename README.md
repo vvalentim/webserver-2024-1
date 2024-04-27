@@ -34,7 +34,7 @@ composer install
 
 Os arquivos de teste para usar o banco de dados podem ser encontrados na pasta __schema__.
 
-#### Para desenvolvimento local pelo _Bult-in PHP server_:
+#### Para desenvolvimento local pelo _Built-in PHP webserver_:
 
 É necessário definir as variáveis de ambiente, crie o arquivo `.env` e defina o acesso ao banco de acordo com o exemplo `.env.example`
 

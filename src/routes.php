@@ -53,6 +53,5 @@ Router::group([
 
             Router::delete("/deletar/{idLead}", "Leads@destroy");
         });
-
     });
 });

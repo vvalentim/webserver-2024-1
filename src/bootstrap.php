@@ -3,15 +3,17 @@
 use Core\App;
 use Core\Container;
 use Core\Database;
-use Core\Helpers;
 
 $container = new Container();
 
 $container->bind("Core\Database", function () {
-    $config = require(Helpers::getPath("base")."/config.php");
-    $use_db = $config["use_db"];
+    $config = [
+        "dsn" => $_ENV["DB_DSN"],
+        "username" => $_ENV["DB_USER"],
+        "password" => $_ENV["DB_PASSWORD"],
+    ];
 
-    return Database::getInstance($config[$use_db], [
+    return Database::getInstance($config, [
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
     ]);

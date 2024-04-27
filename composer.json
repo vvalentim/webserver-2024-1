@@ -6,7 +6,16 @@
             "Models\\": "src/Models"
         }
     },
+    "scripts": {
+      "dev": [
+        "Composer\\Config::disableProcessTimeout",
+        "@php -S localhost:8080 -t public/ dev-server.php"
+      ]
+    },
     "require": {
         "pecee/simple-router": "^5.4"
+    },
+    "require-dev": {
+        "vlucas/phpdotenv": "^5.6"
     }
 }

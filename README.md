@@ -4,63 +4,70 @@ O objetivo desse projeto é criar uma aplicação web como um exercício avaliat
 
 O tema escolhido para o projeto é _sistema web para imobiliárias_.
 
-Os participantes desse projeto são: João Victor Valentim e Guilherme Czarnecki Oconoski.
+Os participantes desse projeto são: 
+- João Victor Valentim 
+- Guilherme Czarnecki Oconoski.
 
 ### Organização do projeto
 
 Esse projeto vai consistir em três etapas, onde o código será separado após cada entrega. Dessa forma o ambiente, as dependências e instruções podem variar de acordo com cada etapa do projeto.
 
-### Ambientes testados
+### Ambientes e configurações utilizadas localmente
 
 1. Ubuntu 22.04.4 LTS (WSL2)
-2. PHP 8.1.2
-3. Apache/2.4.52 (Ubuntu)
-4. PostgreSQL 14.11 (Ubuntu 14.11-0ubuntu0.22.04.1)
+- PHP 8.1.2
+- PostgreSQL 14.11 (Ubuntu 14.11-0ubuntu0.22.04.1)
+
+2. Vercel
+- Node v20.10.0
+- Vercel CLI 34.0.0
 
 ### Instalação e execução
 
 ```
 git clone https://github.com/vvalentim/webserver-2024-1.git
-```
 
-Os arquivos de teste para usar o banco de dados podem ser encontrados na pasta __schema__, configure o banco e suas credenciais de acesso no arquivo __config.php__
-
-#### Para execução com o servidor do PHP:
-
-```
 cd webserver-2024-1/
 
-php -S localhost:8080 -t public/ dev-server.php
+composer install
 ```
 
-#### Para execução com o servidor Apache:
+Os arquivos de teste para usar o banco de dados podem ser encontrados na pasta __schema__.
 
-Primeiro, é necessário habilitar o módulo de reescrita do Apache:
+#### Para desenvolvimento local pelo _Bult-in PHP server_:
 
-```
-a2enmod rewrite
-systemctl restart apache2
-```
-
-Em seguida, alterar a diretiva *AllowOverride* para *All* no seu arquivo de configuração da sua *virtual host*, ficará parecido com:
+É necessário definir as variáveis de ambiente, crie o arquivo `.env` e defina o acesso ao banco de acordo com o exemplo `.env.example`
 
 ```
-<Directory /var/www/html>
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-</Directory>
+composer dev
 ```
 
-Por fim, configure o *document root* e *directory* para apontar para a pasta *public* do projeto, tal como:
+#### Para utilizar a runtime _vercel-php_ e fazer deploy na Vercel:
+
+Instale o interface de terminal da Vercel e configure seu login.
 
 ```
-ServerAdmin webmaster@localhost
-DocumentRoot /home/user/projects/webserver-2024-1/public
+# Instale o pacote globalmente
+npm i -g vercel
 
-<Directory /home/user/projects/webserver-2024-1/public>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-</Directory>
+# Realize o login
+vercel login
 ```
+
+Pelo site da Vercel, crie um projeto e mude a versão do Node.js que será utilizada para 18.x (padrão é 20.x porém está com problemas).
+
+```
+Project Settings > General > Node.js Version
+```
+
+Ainda no site da Vercel, configure as variáveis de ambiente. Você deve especificar o acesso ao banco de dados de acordo com o exemplo `.env.example`: 
+
+```
+Project Settings > Environment Variables
+```
+
+### Recursos
+
+- [Composer: para gerenciar as dependências do projeto](https://getcomposer.org/)
+- [Vercel: para deploy da aplicação](https://vercel.com/)
+- [Railway: para deploy de uma instância Postgres](https://railway.app/)

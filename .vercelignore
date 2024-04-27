@@ -1,0 +1,10 @@
+/schema
+/tests
+/vendor
+
+.vscode
+.env
+.env.example
+README.md
+
+/public/.htaccess

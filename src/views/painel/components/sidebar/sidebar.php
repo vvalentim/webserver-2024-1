@@ -6,6 +6,7 @@
         <hr>
         <?php require(__DIR__."/navlist.php"); ?>
         <hr>
+        <?php require(__DIR__."/dropdownUser.php"); ?>
     </aside>
 </div>
 <div class="offcanvas offcanvas-start p-3" tabindex="-1" id="offcanvas-sidebar" style="width: 270px;">
@@ -17,5 +18,6 @@
         <hr>
         <?php require(__DIR__."/navlist.php"); ?>
         <hr>
+        <?php require(__DIR__."/dropdownUser.php"); ?>
     </div>
 </div>

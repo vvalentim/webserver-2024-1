@@ -14,11 +14,11 @@ Router::group([
     "namespace" => "\\Controllers\\Painel", 
     "prefix" => "/painel"
 ], function() {
-    # Login
-    Router::form("/login", "Login@view");
     
-    # Rotas com autenticação obrigatória
+    # Rotas com middleware de autenticação
     Router::group(["middleware" => \Middleware\VerificaAutenticacao::class], function() {
+        Router::form("/login", "Login@view")->name("login");
+        Router::form("/logout", "Login@sair")->name("logout");
         Router::get("/", "Inicio@view");
 
         # Pessoas

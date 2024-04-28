@@ -30,12 +30,23 @@ class Login extends Controller {
         // TODO: gerar token de sessão
         $_SESSION["usuario"] = [
             "id_usuario" => $usuario->id(), 
+            "nome" => $usuario->nome,
             "token_sessao" => null
         ];
 
         $_SESSION["autenticado"] = true;
 
         response()->redirect("/painel", 200);
+    }
+
+    public function sair() {
+        if (isset($_SESSION["autenticado"])) {
+            // TODO: invalidar o token de sessão
+            $_SESSION["usuario"] = [];
+            $_SESSION["autenticado"] = false;
+        }
+
+        response()->redirect("/painel/logout", 200);
     }
     
     public function view() {

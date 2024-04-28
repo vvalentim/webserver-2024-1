@@ -18,7 +18,7 @@ Router::group([
     Router::form("/login", "Login@view");
     
     # Rotas com autenticação obrigatória
-    Router::group([], function() {
+    Router::group(["middleware" => \Middleware\VerificaAutenticacao::class], function() {
         Router::get("/", "Inicio@view");
 
         # Pessoas

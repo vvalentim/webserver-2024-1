@@ -18,17 +18,9 @@
                             <p class="fw-semibold">Tipo de cadastro</p>
                             <div class="row g-4 mb-3">
                                 <div class="col-md-auto">
-                                    <select class="form-select" id="tipo-pessoa" name="tipo_pessoa" style="min-width: 250px;" required>
-                                        <option value="" selected>Selecione o tipo de pessoa</option>
+                                    <select class="form-select" id="tipo-pessoa" name="documentoTipo" style="min-width: 250px;" required>
                                         <option value="F">Pessoa Física</option>
                                         <option value="J">Pessoa Jurídica</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-auto">
-                                    <select class="form-select" id="vinculo" name="tipo_vinculo" style="min-width: 250px" required>
-                                        <option value="" selected>Selecione o tipo de vínculo</option>
-                                        <option value="CLI">Cliente</option>
-                                        <option value="COL">Colaborador</option>
                                     </select>
                                 </div>
                             </div>
@@ -39,9 +31,10 @@
                                     <input 
                                         type="text" 
                                         class="form-control" 
-                                        id="nome" name="nome_razao" 
-                                        placeholder="Nome completo ou Razão social" 
-                                        maxlength="60" 
+                                        id="nome" 
+                                        name="nome" 
+                                        placeholder="Nome completo" 
+                                        maxlength="100" 
                                         required
                                     >
                                 </div>
@@ -51,7 +44,7 @@
                                         class="form-control" 
                                         id="documento" 
                                         name="documento" 
-                                        placeholder="CPF ou CNPJ" 
+                                        placeholder="CPF" 
                                         style="min-width: 220px;" 
                                         maxlength="18" 
                                         required
@@ -62,8 +55,8 @@
                                         type="text" 
                                         class="form-control" 
                                         id="nascimento" 
-                                        name="data_nasc_fund" 
-                                        placeholder="Data de nascimento ou fundação" 
+                                        name="nascimento" 
+                                        placeholder="Data de nascimento" 
                                         maxlength="10" 
                                         style="min-width: 260px"
                                         required
@@ -87,7 +80,7 @@
                                 <div class="col-md-auto">
                                     <select class="form-select" id="uf" name="uf" style="min-width: 130px">
                                         <option selected>Selecione a UF</option>
-                                        <?php foreach($_UF as $uf) : ?>
+                                        <?php foreach($_CONST_LISTA_UF as $uf) : ?>
                                         <option value="<?= $uf; ?>"><?= $uf; ?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -124,7 +117,8 @@
                                     <input 
                                         type="text" 
                                         class="form-control" 
-                                        id="numero" name="numero" 
+                                        id="numero" 
+                                        name="enderecoNumero" 
                                         placeholder="Número" 
                                         style="min-width: 100px;"
                                     >
@@ -134,7 +128,7 @@
                                         type="text" 
                                         class="form-control" 
                                         id="complemento" 
-                                        name="complemento" 
+                                        name="enderecoComplemento" 
                                         placeholder="Complemento" 
                                         style="min-width: 150px;"
                                     >

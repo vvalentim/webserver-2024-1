@@ -4,14 +4,20 @@
             "Core\\": "src/Core",
             "Controllers\\": "src/Controllers",
             "Models\\": "src/Models",
-            "Middleware\\": "src/Middleware"
+            "Middleware\\": "src/Middleware",
+            "Exceptions\\": "src/Exceptions",
+            "Handlers\\": "src/Handlers"
         }
     },
     "scripts": {
-      "dev": [
-        "Composer\\Config::disableProcessTimeout",
-        "@php -S localhost:8080 -t public/ dev-server.php"
-      ]
+        "dev": [
+          "Composer\\Config::disableProcessTimeout",
+          "@php -S localhost:8080 -t public/ dev-server.php"
+        ],
+        "test": [
+          "Composer\\Config::disableProcessTimeout",
+          "@php -S localhost:3000 ./tests/index.php"
+        ]
     },
     "require": {
         "pecee/simple-router": "^5.4"

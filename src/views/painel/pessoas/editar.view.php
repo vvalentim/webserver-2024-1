@@ -15,21 +15,19 @@
                         </div>
 
                         <form method="POST">
-                            <input type="hidden" name="_method" value="PATCH">
+                            <input type="hidden" name="_method" value="PUT">
                             <p class="fw-semibold">Tipo de cadastro</p>
                             <div class="row g-4 mb-3">
                                 <div class="col-md-auto">
-                                    <select class="form-select" id="tipo-pessoa" name="tipo_pessoa" style="min-width: 250px;" data-initial-selected="<?= $pessoa->tipo_pessoa; ?>">
-                                        <option value="">Selecione o tipo de pessoa</option>
+                                    <select 
+                                        class="form-select" 
+                                        id="tipo-pessoa" 
+                                        name="documentoTipo" 
+                                        style="min-width: 250px;" 
+                                        data-initial-selected="<?= $pessoa->documentoTipo(); ?>"
+                                    >
                                         <option value="F">Pessoa Física</option>
                                         <option value="J">Pessoa Jurídica</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-auto">
-                                    <select class="form-select" id="vinculo" name="tipo_vinculo" style="min-width: 250px" data-initial-selected="<?= $pessoa->tipo_vinculo; ?>">
-                                        <option value="">Selecione o tipo de vínculo</option>
-                                        <option value="CLI">Cliente</option>
-                                        <option value="COL">Colaborador</option>
                                     </select>
                                 </div>
                             </div>
@@ -41,10 +39,10 @@
                                         type="text" 
                                         class="form-control" 
                                         id="nome" 
-                                        name="nome_razao" 
-                                        placeholder="Nome completo ou Razão social" 
-                                        value="<?= $pessoa->nome_razao; ?>"
-                                        maxlength="60"
+                                        name="nome" 
+                                        placeholder="Nome completo" 
+                                        value="<?= $pessoa->nome(); ?>"
+                                        maxlength="100"
                                         required
                                     >
                                 </div>
@@ -54,9 +52,9 @@
                                         class="form-control" 
                                         id="documento" 
                                         name="documento" 
-                                        placeholder="CPF ou CNPJ" 
+                                        placeholder="CPF" 
                                         style="min-width: 220px;"
-                                        value="<?= $pessoa->documento; ?>"
+                                        value="<?= $pessoa->documento(); ?>"
                                         maxlength="18"
                                         required
                                     >
@@ -66,10 +64,10 @@
                                         type="text" 
                                         class="form-control" 
                                         id="nascimento" 
-                                        name="data_nasc_fund" 
+                                        name="nascimento" 
                                         placeholder="Data de nascimento ou fundação" 
                                         style="min-width: 260px"
-                                        value="<?= $pessoa->data_nasc_fund; ?>"
+                                        value="<?= $pessoa->nascimento(); ?>"
                                         maxlength="10"
                                         required
                                     >
@@ -85,7 +83,7 @@
                                         id="cep" 
                                         name="cep" 
                                         placeholder="CEP"
-                                        value="<?= $pessoa->cep; ?>"
+                                        value="<?= $pessoa->cep(); ?>"
                                         maxlength="9"
                                         required
                                     >
@@ -93,7 +91,7 @@
                                 <div class="col-md-auto">
                                     <select class="form-select" id="uf" name="uf" style="min-width: 130px" data-initial-selected="<?= $uf ?? ""; ?>">
                                         <option value="">Selecione a UF</option>
-                                        <?php foreach($_UF as $uf) : ?>
+                                        <?php foreach($_CONST_LISTA_UF as $uf) : ?>
                                         <option value="<?= $uf; ?>"><?= $uf; ?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -105,7 +103,6 @@
                                         id="cidade" 
                                         name="cidade" 
                                         placeholder="Cidade"
-                                        value="<?= $cidade ?? ""; ?>"
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -115,7 +112,6 @@
                                         id="bairro" 
                                         name="bairro" 
                                         placeholder="Bairro"
-                                        value="<?= $bairro ?? ""; ?>"
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -126,7 +122,6 @@
                                         name="logradouro" 
                                         placeholder="Logradouro" 
                                         style="min-width: 330px;"
-                                        value="<?= $logradouro ?? ""; ?>"
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -137,7 +132,7 @@
                                         name="numero" 
                                         placeholder="Número" 
                                         style="min-width: 100px;"
-                                        value="<?= $pessoa->numero ?? ""; ?>"
+                                        value="<?= $pessoa->enderecoNumero(); ?>"
                                         required
                                     >
                                 </div>
@@ -149,7 +144,7 @@
                                         name="complemento" 
                                         placeholder="Complemento" 
                                         style="min-width: 150px;"
-                                        value="<?= $pessoa->complemento ?? ""; ?>"
+                                        value="<?= $pessoa->enderecoComplemento(); ?>"
                                     >
                                 </div>
                             </div>
@@ -157,7 +152,7 @@
                             <fieldset class="row g-2 campos-cadastro">
                                 <legend class="form-label fs-6 fw-semibold">Telefones</legend>
                                 <div id="cadastro-telefones" class="col-sm-auto">
-                                    <?php foreach($pessoa->telefones as $indice => $telefone) : ?>
+                                    <?php foreach($pessoa->telefones() as $indice => $telefone) : ?>
                                     <div class="wrapper-telefone d-flex">
                                         <input 
                                             type="text" 
@@ -169,7 +164,7 @@
                                             maxlength="15"
                                             required
                                         >
-                                        <?php if ($indice === array_key_first($pessoa->telefones)) : ?>
+                                        <?php if ($indice === array_key_first($pessoa->telefones())) : ?>
                                         <button id="btn-telefone-adicional" type="button" class="btn btn-success">
                                             <i class="bi bi-plus-lg"></i>
                                         </button>
@@ -194,10 +189,10 @@
                                     <i class="bi bi-floppy2-fill"></i>
                                     <span>Editar</span>
                                 </button>
-                                <a type="button" class="btn btn-danger float-end me-2" href="/painel/pessoas/deletar/<?= $pessoa->id(); ?>">
+                                <button type="submit" class="btn btn-danger float-end me-2">
                                     <i class="bi bi-trash"></i>
                                     <span>Excluir</span>
-                                </a>
+                                </button>
                             </div>
 
                         </form>

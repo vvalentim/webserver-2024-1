@@ -1,6 +1,6 @@
 <?php
 
-$_UF = [
+$_CONST_LISTA_UF = [
     "AC",
     "AL",
     "AP",

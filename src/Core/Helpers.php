@@ -9,6 +9,8 @@ class Helpers {
         "base" => "/../..",
         "source" => "/..",
         "views" => "/../views",
+        "views-site" => "/../views/site",
+        "views-painel" => "/../views/painel",
         "controllers" => "/../Controllers",
     ];
 
@@ -46,12 +48,16 @@ class Helpers {
     }
 
     // Code from: https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-snake-case, authored by @xiaojing.
-    public static function camelToSnake($camel): string {
-        $snake = preg_replace('/[A-Z]/', '_$0', $camel);
-        $snake = strtolower($snake);
-        $snake = ltrim($snake, '_');
+    public static function camelToSnake(string $string): string {
+        $string = preg_replace("/[A-Z]/", "_$0", $string);
+        $string = strtolower($string);
+        $string = ltrim($string, "_");
         
-        return $snake;
+        return $string;
+    }
+
+    public static function snakeToCamel(string $string): string {
+        return lcfirst(str_replace("_", "", ucwords($string, "_")));
     }
 
     public static function onlyNumbersAsString(string $string): string {

@@ -79,11 +79,11 @@ const alterarTipoCampos = () => {
   );
 
   if (select.value === "J") {
-    alterarPlaceholders("Razão Social", "CNPJ", "Data de Fundação");
+    alterarPlaceholders("Razão social", "CNPJ", "Data de fundação");
     toggleHabilitarElementos(elementosCadastro, true);
     $("#documento").mask("00.000.000/0000-00", { reverse: true });
   } else if (select.value === "F") {
-    alterarPlaceholders("Nome Completo", "CPF", "Data de Nascimento");
+    alterarPlaceholders("Nome completo", "CPF", "Data de nascimento");
     toggleHabilitarElementos(elementosCadastro, true);
     $("#documento").mask("000.000.000-00", { reverse: true });
   } else {

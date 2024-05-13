@@ -15,14 +15,6 @@
                         
                         <div class="row g-2 mb-4">
                             <div class="col-md">
-                                <label class="form-label" for="vinculo">Vínculo</label>
-                                <select class="form-select form-select-sm" id="vinculo">
-                                    <option selected>Selecione o tipo de vínculo</option>
-                                    <option value="cliente">Cliente</option>
-                                    <option value="colaborador">Colaborador</option>
-                                </select>
-                            </div>
-                            <div class="col-md">
                                 <label class="form-label text-sm" for="tipo-pessoa">Tipo</label>
                                 <select class="form-select form-select-sm" id="tipo-pessoa">
                                     <option selected>Selecione o tipo de pessoa</option>
@@ -64,23 +56,21 @@
                                     <th scope="col">Nome</th>
                                     <th scope="col">Telefones</th>
                                     <th scope="col">Tipo de pessoa</th>
-                                    <th scope="col">Tipo de vínculo</th>
                                     <th scope="col">Editar</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($listaPessoas as $pessoa) : ?>
+                                <?php foreach($pessoas as $pessoa) : ?>
                                 <tr>
-                                    <td><?= $pessoa->nome_razao; ?></td>
+                                    <td><?= $pessoa->nome(); ?></td>
                                     <td>
-                                        <?php foreach($pessoa->telefones as $telefone) : ?>
+                                        <?php foreach($pessoa->telefones() as $telefone) : ?>
                                         <div><?= $telefone ?></div>
                                         <?php endforeach; ?>
                                     </td>
-                                    <td><?= $pessoa->tipo_pessoa === "F" ? "Pessoa Física" : "Pessoa Jurídica"; ?></td>
-                                    <td><?= $pessoa->tipo_vinculo === "CLI" ? "Cliente" : "Colaborador"; ?></td>
+                                    <td><?= $pessoa->tipoPessoa(); ?></td>
                                     <td>
-                                        <a href="/painel/pessoas/editar/<?= $pessoa->id(); ?>">
+                                        <a href="/painel/pessoas/<?= $pessoa->id(); ?>/editar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
                                     </td>

@@ -2,125 +2,201 @@
 
 namespace Models\Pessoas;
 
-use Core\Validator;
+use Core\ActiveRecord;
 use DateTime;
+use Throwable;
 
-class Pessoa {
-    public const TAMANHO_MAX_NOME = 60;
-    public const TAMANHO_MAX_NUMERO = 30;
-    public const TAMANHO_MAX_COMPLEMENTO = 50;
+/**
+ * @method string nome()
+ * @method string documento()
+ * @method string documentoTipo()
+ * @method string cep()
+ * @method string enderecoNumero()
+ * @method string enderecoComplemento()
+ * 
+ * @method Pessoa setNome(string $nome)
+ * @method Pessoa setDocumento(string $documento)
+ * @method Pessoa setDocumentoTipo(string $documentoTipo)
+ * @method Pessoa setEnderecoNumero(string $enderecoNumero)
+ * @method Pessoa setEnderecoComplemento(string $enderecoComplemento)
+ * @method Pessoa setTelefones(array $telefones)
+ */
+final class Pessoa extends ActiveRecord {
+    protected const TABLE = "pessoas";
 
-    protected int $id;
-    public string $nome_razao;
-    public string $tipo_pessoa;
-    public string $tipo_vinculo;
-    public string $documento;
-    public string $data_nasc_fund;
-    public string $cep;
-    public string $numero;
-    public string $complemento;
-    public array $telefones;
+    protected string $nome;
+    protected string $documento;
+    protected string $documento_tipo;
+    protected string $nascimento;
+    protected string $cep;
+    protected string $endereco_numero;
+    protected string $endereco_complemento;
+    protected array $telefones;
 
-    public function __construct() {
-        // Formata os campos necessários para apresentação
-        $this->data_nasc_fund = DateTime::createFromFormat("Y-m-d", $this->data_nasc_fund)->format("d/m/Y");
+    public function setDocumento(string $documento): Pessoa {
+        $this->documento = preg_replace("/\D/", "", $documento);
+        
+        return $this;
     }
 
-    public function id(): int {
-        return $this->id;
+    public function setNascimento(string $data): Pessoa {
+        $this->nascimento = DateTime::createFromFormat("d/m/Y", $data)->format("Y-m-d");
+
+        return $this;
     }
 
-    public static function validarNome(string $nome): bool {
-        return !Validator::isEmpty($nome);
+    public function setCep(string $cep): Pessoa {
+        $this->cep = preg_replace("/\D/", "", $cep);
+
+        return $this;
     }
 
-    public static function validarTipoPessoa(string $tipo): bool {
-        return $tipo === "J" || $tipo == "F";
+    public function setEndereco(string $cep, string $numero, string $complemento): Pessoa {
+        $this->endereco_numero = $numero;
+        $this->endereco_complemento = $complemento;
+
+        return $this->setCep($cep);
     }
 
-    public static function validarTipoVinculo(string $tipo): bool {
-        return $tipo === "CLI" || $tipo === "COL";
+    public function tipoPessoa(): ?string {
+        return match($this->documento_tipo) {
+            "F" => "Pessoa Física",
+            "J" => "Pessoa Jurídica",
+            default => null,
+        };
     }
 
-    // Source: https://gist.github.com/rafael-neri/ab3e58803a08cb4def059fce4e3c0e40
-    public static function validarCPF(string $cpf): bool {
-        // Extrai somente os números
-        $cpf = preg_replace( '/[^0-9]/is', '', $cpf );
-        // Verifica se foi informado todos os digitos corretamente
-        if (strlen($cpf) != 11) {
-            return false;
+    public function nascimento(): string {
+        return DateTime::createFromFormat("Y-m-d", $this->nascimento)->format("d/m/Y");
+    }
+
+    public function telefones(): array {
+        if (empty($telefones)) {
+            $this->telefones = $this->fetchTelefones();
         }
-        // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
-        if (preg_match('/(\d)\1{10}/', $cpf)) {
-            return false;
+
+        return $this->telefones;
+    }
+
+    protected function fetchTelefones(): array {
+        $telefones = [];
+
+        if (!empty($this->id)) {
+            $query = "SELECT numero_telefone FROM telefones WHERE id_pessoa = :id_pessoa";
+            $params = ["id_pessoa" => $this->id];
+
+            $stmt = static::runQuery($query, $params);
+            $result = $stmt->fetchAll();
+
+            if (!empty($result)) {
+                $telefones = array_map(fn($row) => $row->numero_telefone, $result);
+            }
         }
-        // Faz o calculo para validar o CPF
-        for ($t = 9; $t < 11; $t++) {
-            for ($d = 0, $c = 0; $c < $t; $c++) {
-                $d += $cpf[$c] * (($t + 1) - $c);
+
+        return $telefones;
+    }
+
+    protected function clearTelefones(): bool {
+        if (!empty($this->id)) {
+            $query = "DELETE FROM telefones WHERE id_pessoa = :id_pessoa";
+            $params = ["id_pessoa" => $this->id];
+
+            $stmt = static::runQuery($query, $params);
+
+            return $stmt->rowCount();
+        }
+
+        return false;
+    }
+
+    protected function addTelefones(): bool {
+        if (!empty($this->id) && !empty($this->telefones)) {
+            $values = array_map(fn() => "({$this->id}, ?)", $this->telefones);
+            $values = join(", ", $values);
+
+            $query = "INSERT INTO telefones (id_pessoa, numero_telefone) VALUES {$values}";
+            $params = [...$this->telefones];
+
+            $stmt = static::runQuery($query, $params);
+
+            return $stmt->rowCount();
+        }
+
+        return false;
+    }
+    
+    protected function create(): bool {
+        $conn = static::db()->connection;
+
+        try {
+            $conn->beginTransaction();
+
+            $table = static::TABLE;
+            $columns = $this->getRecordCols();
+            $query =
+                "INSERT INTO {$table} (".
+                    join(", ", $columns).
+                ") VALUES (".
+                    join(", ", array_map(fn($col) => ":{$col}", $columns)).
+                ")";
+
+            $params = $this->getQueryParams($columns);
+            
+            $stmt = static::runQuery($query, $params);
+
+            if ($stmt->rowCount()) {
+                $this->id = $conn->lastInsertId();
+                $this->addTelefones();
             }
-            $d = ((10 * $d) % 11) % 10;
-            if ($cpf[$c] != $d) {
-                return false;
-            }
+
+            $conn->commit();
+        } catch (Throwable $e) {
+            $conn->rollBack();
+            $this->id = null;
+
+            throw $e;
         }
 
         return true;
     }
 
-    // Source: https://gist.github.com/guisehn/3276302
-    public static function validarCNPJ(string $cnpj): bool {
-        $cnpj = preg_replace('/[^0-9]/', '', (string) $cnpj);
-	
-        // Valida tamanho
-        if (strlen($cnpj) != 14)
-            return false;
-
-        // Verifica se todos os digitos são iguais
-        if (preg_match('/(\d)\1{13}/', $cnpj))
-            return false;	
-
-        // Valida primeiro dígito verificador
-        for ($i = 0, $j = 5, $soma = 0; $i < 12; $i++)
-        {
-            $soma += $cnpj[$i] * $j;
-            $j = ($j == 2) ? 9 : $j - 1;
+    protected function update(): bool {
+        if (empty($this->id)) {
+            return $this->create();
         }
 
-        $resto = $soma % 11;
+        $conn = static::db()->connection;
 
-        if ($cnpj[12] != ($resto < 2 ? 0 : 11 - $resto))
-            return false;
+        try {
+            $conn->beginTransaction();
 
-        // Valida segundo dígito verificador
-        for ($i = 0, $j = 6, $soma = 0; $i < 13; $i++)
-        {
-            $soma += $cnpj[$i] * $j;
-            $j = ($j == 2) ? 9 : $j - 1;
+            $table = static::TABLE;
+            $columns = $this->getRecordCols();
+            $query = 
+                "UPDATE {$table} SET ".
+                    join(", ", array_map(fn($col) => "{$col} = :{$col}", $columns)).
+                " WHERE id = :id";
+
+            $params = $this->getQueryParams([...$columns, "id"]);
+
+            $stmt = static::runQuery($query, $params);
+
+            if ($stmt->rowCount()) {
+                $telefonesDb = $this->fetchTelefones();
+                    
+                if ($telefonesDb !== $this->telefones) {
+                    $this->clearTelefones();
+                    $this->addTelefones();
+                }
+            }
+
+            $conn->commit();
+        } catch (Throwable $e) {
+            $conn->rollBack();
+
+            throw $e;
         }
 
-        $resto = $soma % 11;
-
-        return $cnpj[13] == ($resto < 2 ? 0 : 11 - $resto);
-    }
-
-    public static function validarData(string $data): bool {
-        return Validator::isValidDate($data, "d/m/Y");
-    }
-
-    public static function validarCEP(string $cep): bool {
-        return
-            !Validator::isEmpty($cep) &&
-            strlen($cep) === 8;
-    }
-
-    public static function validarNumero(string $numero): bool {
-        return 
-            !Validator::isEmpty($numero) &&
-            strlen($numero) <= static::TAMANHO_MAX_NUMERO;
-    }
-
-    public static function validarComplemento(string $complemento): bool {
-        return strlen($complemento) <= static::TAMANHO_MAX_COMPLEMENTO;
+        return true;
     }
 }

@@ -11,6 +11,7 @@ class Helpers {
         "views" => "/../views",
         "views-site" => "/../views/site",
         "views-painel" => "/../views/painel",
+        "errors" => "/../views/errors",
         "controllers" => "/../Controllers",
     ];
 

@@ -1,6 +1,7 @@
 <?php
 
 use Handlers\ApiExceptionHandler;
+use Handlers\FrontExceptionHandler;
 use Middleware\CheckAuthApi;
 use Middleware\CheckAuthPainel;
 use Pecee\SimpleRouter\SimpleRouter as Router;
@@ -13,7 +14,8 @@ Router::group(["namespace" => "\\Controllers\\Site"], function() {
 # Rotas do painel
 Router::group([
     "namespace" => "\\Controllers\\Painel",
-    "prefix" => "/painel"
+    "prefix" => "/painel",
+    "exceptionHandler" => FrontExceptionHandler::class,
 ], function() {
     
     Router::group(["middleware" => CheckAuthPainel::class], function() {

@@ -1,5 +1,4 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
-<?php require(__DIR__."/view.const.php"); ?>
 
     <div class="d-flex min-vh-100">
         <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
@@ -89,20 +88,28 @@
                                     >
                                 </div>
                                 <div class="col-md-auto">
-                                    <select class="form-select" id="uf" name="uf" style="min-width: 130px" data-initial-selected="<?= $uf ?? ""; ?>">
-                                        <option value="">Selecione a UF</option>
-                                        <?php foreach($_CONST_LISTA_UF as $uf) : ?>
-                                        <option value="<?= $uf; ?>"><?= $uf; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-auto">
-                                    <input 
+                                    <input
                                         type="text" 
                                         class="form-control" 
-                                        id="cidade" 
-                                        name="cidade" 
+                                        id="uf" 
+                                        name="uf" 
+                                        placeholder="UF"
+                                        style="max-width: 100px;"
+                                        value="<?= $pessoa->uf(); ?>"
+                                        required
+                                        readonly
+                                    >
+                                </div>
+                                <div class="col-md-auto">
+                                    <input
+                                        type="text" 
+                                        class="form-control" 
+                                        id="localidade" 
+                                        name="localidade" 
                                         placeholder="Cidade"
+                                        value="<?= $pessoa->localidade(); ?>"
+                                        required
+                                        readonly
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -112,6 +119,9 @@
                                         id="bairro" 
                                         name="bairro" 
                                         placeholder="Bairro"
+                                        value="<?= $pessoa->bairro(); ?>"
+                                        required
+                                        readonly
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -121,7 +131,10 @@
                                         id="logradouro" 
                                         name="logradouro" 
                                         placeholder="Logradouro" 
+                                        value="<?= $pessoa->logradouro(); ?>"
                                         style="min-width: 330px;"
+                                        required
+                                        readonly
                                     >
                                 </div>
                                 <div class="col-md-auto">

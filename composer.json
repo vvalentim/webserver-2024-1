@@ -6,7 +6,8 @@
             "Models\\": "src/Models",
             "Middleware\\": "src/Middleware",
             "Exceptions\\": "src/Exceptions",
-            "Handlers\\": "src/Handlers"
+            "Handlers\\": "src/Handlers",
+            "Api\\": "src/Api"
         }
     },
     "scripts": {
@@ -20,7 +21,8 @@
         ]
     },
     "require": {
-        "pecee/simple-router": "^5.4"
+        "pecee/simple-router": "^5.4",
+        "guzzlehttp/guzzle": "^7.8"
     },
     "require-dev": {
         "vlucas/phpdotenv": "^5.6"

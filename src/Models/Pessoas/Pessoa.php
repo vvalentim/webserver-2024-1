@@ -2,6 +2,7 @@
 
 namespace Models\Pessoas;
 
+use Api\ViaCep;
 use Core\ActiveRecord;
 use DateTime;
 use Throwable;
@@ -32,6 +33,8 @@ final class Pessoa extends ActiveRecord {
     protected string $endereco_numero;
     protected string $endereco_complemento;
     protected array $telefones;
+
+    protected array $_endereco;
 
     public function setDocumento(string $documento): Pessoa {
         $this->documento = preg_replace("/\D/", "", $documento);
@@ -68,6 +71,38 @@ final class Pessoa extends ActiveRecord {
 
     public function nascimento(): string {
         return DateTime::createFromFormat("Y-m-d", $this->nascimento)->format("d/m/Y");
+    }
+
+    protected function endereco(): array {
+        if (empty($this->_endereco)) {
+            $this->_endereco = ViaCep::json($this->cep);
+        }
+
+        return $this->_endereco;
+    }
+
+    public function uf(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["uf"] ?? "";
+    }
+
+    public function localidade(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["localidade"] ?? "";
+    }
+
+    public function bairro(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["bairro"] ?? "";
+    }
+
+    public function logradouro(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["logradouro"] ?? "";
     }
 
     public function telefones(): array {

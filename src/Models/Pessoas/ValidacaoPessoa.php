@@ -2,6 +2,7 @@
 
 namespace Models\Pessoas;
 
+use Api\ViaCep;
 use Core\InputValidation;
 use Core\Validator;
 
@@ -56,8 +57,8 @@ class ValidacaoPessoa extends InputValidation {
     }
 
     public function cep(string $cep): ValidacaoPessoa {
-        if (!Validator::isValidCEP($cep)) {
-            $this->addError("cep", "O CEP informado é inválido");
+        if (empty(ViaCep::json($cep))) {
+            $this->addError("cep", "O CEP informado é inválido.");
         }
 
         return $this;

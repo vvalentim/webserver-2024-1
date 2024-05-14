@@ -1,5 +1,4 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
-<?php require(__DIR__."/view.const.php"); ?>
 
     <div class="d-flex min-vh-100">
         <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
@@ -78,20 +77,24 @@
                                     >
                                 </div>
                                 <div class="col-md-auto">
-                                    <select class="form-select" id="uf" name="uf" style="min-width: 130px">
-                                        <option selected>Selecione a UF</option>
-                                        <?php foreach($_CONST_LISTA_UF as $uf) : ?>
-                                        <option value="<?= $uf; ?>"><?= $uf; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <input
+                                        type="text" 
+                                        class="form-control" 
+                                        id="uf" 
+                                        name="uf" 
+                                        placeholder="UF"
+                                        style="max-width: 100px;"
+                                        readonly
+                                    >
                                 </div>
                                 <div class="col-md-auto">
                                     <input 
                                         type="text" 
                                         class="form-control" 
-                                        id="cidade" 
-                                        name="cidade" 
+                                        id="localidade" 
+                                        name="localidade" 
                                         placeholder="Cidade"
+                                        readonly
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -101,6 +104,7 @@
                                         id="bairro" 
                                         name="bairro" 
                                         placeholder="Bairro"
+                                        readonly
                                     >
                                 </div>
                                 <div class="col-md-auto">
@@ -111,6 +115,7 @@
                                         name="logradouro" 
                                         placeholder="Logradouro" 
                                         style="min-width: 330px;"
+                                        readonly
                                     >
                                 </div>
                                 <div class="col-md-auto">

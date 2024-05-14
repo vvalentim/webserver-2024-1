@@ -55,7 +55,9 @@ abstract class ActiveRecord {
     }
 
     protected function getRecordCols(): array {
-        $properties = array_filter(get_object_vars($this), fn($value, $key) => is_scalar($value) && $key !== "id", ARRAY_FILTER_USE_BOTH);
+        $properties = array_filter(get_object_vars($this), function($value, $key) {
+            return is_scalar($value) && $key !== "id" && !str_starts_with($key, "_");
+        }, ARRAY_FILTER_USE_BOTH);
 
         return array_keys($properties);
     }
@@ -70,10 +72,12 @@ abstract class ActiveRecord {
         $props = array_keys(get_object_vars($this));
 
         return array_reduce($props, function($array, $prop) use (&$callGetters) {
-            $key = Helpers::snakeToCamel($prop);
-            $value = $callGetters ? $this->$key() : $this->$prop;
+            if (!str_starts_with($prop, "_")) {
+                $key = Helpers::snakeToCamel($prop);
+                $value = $callGetters ? $this->$key() : $this->$prop;
 
-            $array[$key] = $value;
+                $array[$key] = $value;
+            }
 
             return $array;
         }, []);

@@ -186,6 +186,33 @@ const enviarFormulario = (event) => {
   });
 };
 
+const buscarCep = (event) => {
+  const campos = ["uf", "localidade", "bairro", "logradouro", "complemento"];
+  let cep = event.currentTarget.value.replace(/\D/g, "");
+
+  if (cep.length === 8) {
+    $.ajax({
+      url: `https://viacep.com.br/ws/${cep}/json`,
+      type: "get",
+      success: (data) => {
+        if (data.erro) {
+          gerarToasts(["O CEP informado é inválido."]);
+
+          for (const campo of campos) {
+            document.querySelector(`#${campo}`).value = "";
+          }
+
+          return;
+        }
+
+        for (const campo of campos) {
+          document.querySelector(`#${campo}`).value = data[campo];
+        }
+      },
+    });
+  }
+};
+
 const confirmarExclusao = () => {
   const modalEl = document.querySelector("#modal-excluir");
   const modal = new bootstrap.Modal(modalEl);
@@ -221,6 +248,7 @@ $(document).ready(() => {
   document.querySelector("#tipo-pessoa").addEventListener("change", alterarTipoCampos);
   document.querySelector("form").addEventListener("submit", enviarFormulario);
   document.querySelector("#btn-excluir")?.addEventListener("click", confirmarExclusao);
+  document.querySelector("#cep").addEventListener("blur", buscarCep);
 
   // Rotinas para inicialização no modo de edição
 

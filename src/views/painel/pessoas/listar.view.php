@@ -56,7 +56,7 @@
                                     <th scope="col">Nome</th>
                                     <th scope="col">Telefones</th>
                                     <th scope="col">Tipo de pessoa</th>
-                                    <th scope="col">Editar</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,7 +69,7 @@
                                         <?php endforeach; ?>
                                     </td>
                                     <td><?= $pessoa->tipoPessoa(); ?></td>
-                                    <td>
+                                    <td class="fs-6 text-end">
                                         <a href="/painel/pessoas/<?= $pessoa->id(); ?>/editar">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>

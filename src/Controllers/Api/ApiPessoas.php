@@ -66,7 +66,11 @@ final class ApiPessoas extends Controller {
 
         try {
             $pessoa->save();
-            response()->httpCode(201)->json($pessoa->toArray());
+
+            response()->httpCode(201)->json([
+                "status" => "success",
+                "data" => $pessoa->toArray(),
+            ]);
         } catch (IntegrityConstraintException $e) {
             $e->setMessage("Não foi possível efetuar o cadastro, o documento '{$documento}' já existe no sistema.");
 
@@ -92,7 +96,11 @@ final class ApiPessoas extends Controller {
             
         try {
             $pessoa->save();
-            response()->json(["status" => "success"]);
+
+            response()->json([
+                "status" => "success",
+                "data" => $pessoa->toArray(),
+            ]);
         } catch (IntegrityConstraintException $e) {
             // Exceção lançada caso a alteração no documento cause conflito com outro já no DB (UNIQUE KEY)
             $e->setMessage("Não foi possível alterar o cadastro, o documento '{$parametros->documento}' já existe no sistema.");
@@ -106,6 +114,7 @@ final class ApiPessoas extends Controller {
         
         try {
             $pessoa->delete();
+            
             response()->json(["status" => "success"]);
         } catch (IntegrityConstraintException $e) {
             // Trata exceção lançada caso o cadastro esteja relacionado a um imóvel (DELETE RESTRICT)

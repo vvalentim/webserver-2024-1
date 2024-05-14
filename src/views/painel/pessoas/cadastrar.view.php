@@ -14,7 +14,7 @@
                             <hr>
                         </div>
 
-                        <form method="POST">
+                        <form method="POST" action="/api/pessoas">
                             <p class="fw-semibold">Tipo de cadastro</p>
                             <div class="row g-4 mb-3">
                                 <div class="col-md-auto">
@@ -162,7 +162,7 @@
                                     <i class="bi bi-x-circle"></i>
                                     <span>Cancelar</span>
                                 </a>
-                                <button type="submit" class="btn btn-success float-end">
+                                <button id="btn-enviar" type="submit" class="btn btn-success float-end">
                                     <i class="bi bi-plus-lg"></i>
                                     <span>Cadastrar</span>
                                 </button>
@@ -175,6 +175,9 @@
                 <!-- Content End -->
             </main>
         </div>
+    </div>
+    
+    <div class="toast-container bottom-0 end-0 p-4">
     </div>
 
     <!-- Carrega os scripts necessários para a página com defer para aguardar a resolução das dependências -->

@@ -31,4 +31,8 @@ const phoneMask = (value) => {
   return value;
 };
 
-export { phoneMask, toggleHabilitarElementos, novoElemento };
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+export { sleep, phoneMask, toggleHabilitarElementos, novoElemento };

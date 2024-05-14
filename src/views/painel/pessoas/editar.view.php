@@ -14,7 +14,7 @@
                             <hr>
                         </div>
 
-                        <form method="POST">
+                        <form method="POST" action="/api/pessoas/<?= $pessoa->id(); ?>">
                             <input type="hidden" name="_method" value="PUT">
                             <p class="fw-semibold">Tipo de cadastro</p>
                             <div class="row g-4 mb-3">
@@ -129,7 +129,7 @@
                                         type="text" 
                                         class="form-control" 
                                         id="numero" 
-                                        name="numero" 
+                                        name="enderecoNumero" 
                                         placeholder="Número" 
                                         style="min-width: 100px;"
                                         value="<?= $pessoa->enderecoNumero(); ?>"
@@ -141,7 +141,7 @@
                                         type="text" 
                                         class="form-control" 
                                         id="complemento" 
-                                        name="complemento" 
+                                        name="enderecoComplemento" 
                                         placeholder="Complemento" 
                                         style="min-width: 150px;"
                                         value="<?= $pessoa->enderecoComplemento(); ?>"
@@ -185,11 +185,11 @@
                                     <i class="bi bi-x-circle"></i>
                                     <span>Cancelar</span>
                                 </a>
-                                <button type="submit" class="btn btn-primary float-end">
+                                <button id="btn-enviar" type="submit" class="btn btn-primary float-end">
                                     <i class="bi bi-floppy2-fill"></i>
                                     <span>Editar</span>
                                 </button>
-                                <button type="submit" class="btn btn-danger float-end me-2">
+                                <button id="btn-excluir" type="button" class="btn btn-danger float-end me-2">
                                     <i class="bi bi-trash"></i>
                                     <span>Excluir</span>
                                 </button>
@@ -203,6 +203,26 @@
             </main>
         </div>
     </div>
+    
+    <div class="toast-container bottom-0 end-0 p-4">
+    </div>
+
+    <div class="modal fade" id="modal-excluir" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-excluir-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-excluir-label">Confirmação de exclusão</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">Você tem certeza que deseja excluir esse cadastro?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Carrega os scripts necessários para a página com defer para aguardar a resolução das dependências -->
     <script src="/assets/js/painel/cadastroPessoas.js" type="module" defer></script>

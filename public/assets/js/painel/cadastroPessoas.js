@@ -1,4 +1,4 @@
-import { novoElemento, toggleHabilitarElementos } from "../helpers.js";
+import { novoElemento, sleep, toggleHabilitarElementos } from "../helpers.js";
 
 const maskTelefone = {
   behavior: function (val) {
@@ -46,6 +46,37 @@ const wrapperTelefone = {
   subElementos: [inputTelefone, btnRemover],
 };
 
+const conteudoToast = [
+  {
+    tag: "div",
+    atributos: {
+      class: "d-flex",
+    },
+    subElementos: [
+      { tag: "div", atributos: { class: "toast-body" } },
+      {
+        tag: "div",
+        atributos: {
+          type: "button",
+          class: "btn-close btn-close-white me-2 m-auto",
+          "data-bs-dismiss": "toast",
+          "data-bs-delay": '{"show":0,"hide": 200}',
+        },
+      },
+    ],
+  },
+];
+
+const baseToast = (tipo) => {
+  return {
+    tag: "div",
+    atributos: {
+      class: `toast align-items-center text-bg-${tipo} border-0`,
+    },
+    subElementos: conteudoToast,
+  };
+};
+
 const adicionarTelefone = () => {
   const elWrapperCampos = document.querySelector("#cadastro-telefones");
   const elWrapperTelefone = novoElemento(wrapperTelefone);
@@ -81,19 +112,115 @@ const alterarTipoCampos = () => {
   if (select.value === "J") {
     alterarPlaceholders("Razão social", "CNPJ", "Data de fundação");
     toggleHabilitarElementos(elementosCadastro, true);
-    $("#documento").mask("00.000.000/0000-00", { reverse: true });
+    $("#documento").mask("00.000.000/0000-00");
   } else if (select.value === "F") {
     alterarPlaceholders("Nome completo", "CPF", "Data de nascimento");
     toggleHabilitarElementos(elementosCadastro, true);
-    $("#documento").mask("000.000.000-00", { reverse: true });
+    $("#documento").mask("000.000.000-00");
   } else {
     toggleHabilitarElementos(elementosCadastro, false);
   }
 };
 
+const gerarToasts = async (mensagens = [], tipo = "danger") => {
+  const container = document.querySelector(".toast-container");
+
+  for (const mensagem of mensagens) {
+    const toastEl = novoElemento(baseToast(tipo));
+    const toastBody = toastEl.querySelector(".toast-body");
+    const toast = new bootstrap.Toast(toastEl);
+
+    toastBody.innerText = mensagem;
+    container.appendChild(toastEl);
+    toast.show();
+    toastEl.addEventListener("hidden.bs.toast", () => {
+      toastEl.remove();
+    });
+
+    await sleep(100);
+  }
+};
+
+const parseErros = (response) => {
+  const erros = [];
+
+  if (response.message) {
+    erros.push(response.message);
+  } else if (response.errors) {
+    erros.push(...response.errors.map((err) => err.message));
+  } else {
+    erros.push("Não foi possível processar sua requisição.");
+  }
+
+  return erros;
+};
+
+const enviarFormulario = (event) => {
+  const form = event.currentTarget;
+  const btnEnviar = document.querySelector("#btn-enviar");
+  const methodSpoofing = document.querySelector('input[name="_method"]')?.value;
+
+  event.preventDefault();
+  btnEnviar.setAttribute("disabled", true);
+
+  $.ajax({
+    url: form.action,
+    type: methodSpoofing ?? form.method,
+    data: $(form).serialize(),
+    success: ({ data }) => {
+      if (methodSpoofing === "PUT") {
+        gerarToasts(["Alterações realizadas com sucesso."], "success");
+      } else {
+        gerarToasts(["Cadastrado realizado com sucesso."], "success");
+        setTimeout(() => (window.location.href = `/painel/pessoas/${data.id}/editar`), 800);
+      }
+    },
+    error: ({ responseJSON }) => {
+      const erros = parseErros(responseJSON);
+
+      gerarToasts(erros);
+    },
+    complete: () => {
+      setTimeout(() => btnEnviar.removeAttribute("disabled"), 1000);
+    },
+  });
+};
+
+const confirmarExclusao = () => {
+  const modalEl = document.querySelector("#modal-excluir");
+  const modal = new bootstrap.Modal(modalEl);
+  const btnConfirmar = modalEl.querySelector(".btn-danger");
+
+  const excluir = () => {
+    modal.hide();
+    btnConfirmar.setAttribute("disabled", true);
+
+    $.ajax({
+      url: document.querySelector("form").action,
+      type: "delete",
+      success: () => (window.location.href = "/painel/pessoas"),
+      error: ({ responseJSON }) => {
+        const erros = parseErros(responseJSON);
+
+        gerarToasts(erros);
+      },
+      complete: () => {
+        setTimeout(() => btnConfirmar.removeAttribute("disabled"), 1000);
+
+        btnConfirmar.removeEventListener("click", excluir);
+      },
+    });
+  };
+
+  btnConfirmar.addEventListener("click", excluir);
+  modal.show();
+};
+
 $(document).ready(() => {
   document.querySelector("#btn-telefone-adicional").addEventListener("click", adicionarTelefone);
   document.querySelector("#tipo-pessoa").addEventListener("change", alterarTipoCampos);
+  document.querySelector("form").addEventListener("submit", enviarFormulario);
+  document.querySelector("#btn-excluir")?.addEventListener("click", confirmarExclusao);
 
   // Rotinas para inicialização no modo de edição
 

@@ -16,7 +16,7 @@
                         <form method="GET">
                             <div class="row g-2">
                                 <div class="col">
-                                    <input type="text" name="filter" class="form-control form-control-sm" placeholder="Busque pelo título ou endereço" value="<?php echo $filter ?? '' ?>">
+                                    <input type="text" name="filter" class="form-control form-control-sm" placeholder="Busque pelo título ou endereço">
                                 </div>
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-sm btn-primary">
@@ -44,7 +44,7 @@
                         <table class="table table-sm table-secondary table-striped table-responsive rounded" style="font-size: 14px;">
                             <thead>
                                 <tr>
-                                    <th scope="col">Imagem</th>
+                                    <!-- <th scope="col">Imagem</th> -->
                                     <th scope="col">Anúncio</th>
                                     <th scope="col">Preço (R$)</th>
                                     <th scope="col">Endereço</th>
@@ -54,18 +54,25 @@
                             <tbody>
                             <?php foreach($imoveis as $imovel) : ?>
                                 <tr>
-                                    <td style="vertical-align: middle;"><img src="<?= str_replace("public/", "../", $imovel["imagem_path"]); ?>" class="img-fluid" style="max-width: 80px;"></td>
+                                    <!-- <td style="vertical-align: middle;"><img src="" class="img-fluid" style="max-width: 80px;"></td> -->
                                     <td style="vertical-align: middle;">
-                                        <?= $imovel["titulo"] ?>
+                                        <?= $imovel->titulo(); ?>
                                     </td>
-                                    <td style="vertical-align: middle;"><?= str_replace(".", ",", $imovel["preco"]); ?></td>
-                                    <td style="vertical-align: middle;"><?= $imovel["complemento"]; ?></td>
-                                    <td style="vertical-align: middle; text-align: end;">
-                                        <a href="/painel/imoveis/editar/<?= $imovel["id"] ?>"><i class="text-primary bi bi-pen me-1" style="font-size: 1.5rem"></i></a>
-                                        <a href="javascript:void(0)" onclick="removerImovel(<?= $imovel['id'] ?>)"><i class="text-danger bi bi-trash me-1" style="font-size: 1.5rem"></i></a>
+                                    <td style="vertical-align: middle;"><?= $imovel->preco(); ?></td>
+                                    <td style="vertical-align: middle;"><?= $imovel->enderecoExtenso(); ?></td>
+                                    <td>
+                                        <div class="d-flex justify-content-end">
+                                            <a 
+                                                class="d-flex flex-column align-items-center text-decoration-none me-2" 
+                                                href="/painel/imoveis/<?= $imovel->id(); ?>/editar"
+                                            >
+                                                <i class="text-primary bi bi-pencil-square"></i>
+                                                <span>Editar</span>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
-                                <?php endforeach; ?>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -74,5 +81,4 @@
             </main>
         </div>
     </div>
-<script src="/assets/js/painel/listaImoveis.js" defer></script>
 <?php require(__DIR__."/../../html.end.php"); ?>

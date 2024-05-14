@@ -2,7 +2,8 @@
 
 
 <main class="container-fluid mt-4 p-0">
-    <?php require (__DIR__ . "/components/site-header.php"); ?>
+    <?php require (__DIR__ . "/components/header.php"); ?>
+
     <section class="position-relative pt-0">
         <div class="container-fluid p-0">
             <img src="https://c.wallhere.com/photos/fe/72/1920x1080_px_building_Empire_State_Building_Manhattan_New_York_City_Urban_Exploration-1322187.jpg!d"
@@ -184,8 +185,8 @@
     </section>
 </main>
 
-<?php require (__DIR__ . "/components/site-footer.php"); ?>
+<?php require (__DIR__ . "/components/footer.php"); ?>
 
-<script src="/assets/js/site-ajax.js" defer></script>
+<script src="/assets/js/site/main.js" defer></script>
 
 <?php require (__DIR__ . "/../html.end.php"); ?>

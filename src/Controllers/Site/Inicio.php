@@ -12,6 +12,7 @@ final class Inicio extends Controller {
             "title" => "Imobiliária XYZ",
         ]);
     }
+    
     public function index() {
         $this->render(view: "inicio", path: Helpers::getPath("views-site"));
     }

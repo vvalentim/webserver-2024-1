@@ -18,6 +18,8 @@ use Core\ActiveRecord;
  * @method Lead setMensagem(string $mensagem)
  */
 final class Lead extends ActiveRecord {
+    protected const TABLE = "leads";
+
     protected string $nome;
     protected string $email;
     protected string $telefone;

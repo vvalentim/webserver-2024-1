@@ -1,22 +1,10 @@
 <?php require(__DIR__."/../../html.start.php"); ?>
-<?php require(__DIR__."/mock.data.php"); ?>
 <div class="d-flex min-vh-100">
     <?php require(__DIR__."/../components/sidebar/sidebar.php"); ?>
     <div class="container px-4">
         <?php require(__DIR__."/../components/header.php"); ?>
         <main class="container-fluid mt-4">
             <!-- Content Start -->
-
-            <?php
-                if (isset($errors)) {
-                    echo '<div class="danger card mb-4">';
-                    foreach ($errors as $e) {
-                        echo '<div>' . $e . ' *</div>';
-                    }
-                    echo '</div>';
-                }
-            ?>
-
             <div class="row bg-light rounded py-3">
                 <div class="col">
                     <div>
@@ -27,14 +15,14 @@
                     <form method="POST" enctype="multipart/form-data">
                         <p class="fw-semibold">Tipo de cadastro</p>
                         <div class="row g-4 mb-3">
-                            <div class="col-md-auto">
+                            <!-- <div class="col-md-auto">
                                 <select class="form-select" id="id_proprietario" name="id_proprietario"
                                     style="min-width: 250px">
                                     <option selected>Selecione o proprietário</option>
                                     <option value="1">Pessoa teste</option>
                                     <option value="2">Pessoa</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="col-md-auto">
                                 <select class="form-select" id="tipo_imovel" name="tipo_imovel"
                                     style="min-width: 250px">
@@ -50,8 +38,8 @@
                             <div class="col-md-auto">
                                 <select class="form-select" name="finalidade" id="finalidade" style="min-width: 250px">
                                     <option selected>Selecione o finalidade</option>
-                                    <option value="v">Venda</option>
-                                    <option value="a">Aluguel</option>
+                                    <option value="V">Venda</option>
+                                    <option value="A">Aluguel</option>
                                 </select>
                             </div>
                         </div>
@@ -122,10 +110,10 @@
                                     style="min-width: 100px;">
                             </div>
                             <div class="col-md-auto">
-                                <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro">
+                                <input type="number" class="form-control" id="bairro" name="bairro" placeholder="Bairro">
                             </div>
                             <div class="col-md-auto">
-                                <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
+                                <input type="number" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
                             </div>
                             <div class="col-md-auto">
                                 <select class="form-select" id="uf" name="uf" style="min-width: 130px">

@@ -15,7 +15,7 @@ final class Pessoas extends Controller {
     }
 
     public function formEditar(int $idPessoa) {
-        if (!empty($idPessoa)) {
+        if ($idPessoa) {
             $pessoa = Pessoa::findBy("id", $idPessoa);
 
             if ($pessoa) {
@@ -24,9 +24,9 @@ final class Pessoas extends Controller {
                     setAttribute("pessoa", $pessoa)->
                     render("editar");
             }
-
-            throw new NotFoundHttpException("O cadastro com id '{$idPessoa}' não foi encontrado.");
         }
+
+        throw new NotFoundHttpException("O cadastro com id '{$idPessoa}' não foi encontrado.");
     }
 
     public function formCadastrar() {

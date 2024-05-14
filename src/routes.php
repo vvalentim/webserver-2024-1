@@ -27,7 +27,13 @@ Router::group([
         Router::get("/pessoas/cadastrar", "Pessoas@formCadastrar");
         Router::get("/pessoas/{id}/editar", "Pessoas@formEditar");
 
+        Router::get("/usuarios", "Usuarios@index");
+
         Router::get("/imoveis", "Imoveis@index");
+        Router::get("/imoveis/cadastrar", "Imoveis@formCadastrar");
+        Router::get("/imoveis/{id}/editar", "Imoveis@formEditar");
+        
+        Router::get("/leads", "Leads@index");
     });
 
 })->where(["id" => "[0-9]+"]);

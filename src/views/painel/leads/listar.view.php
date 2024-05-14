@@ -41,21 +41,29 @@
                                     <th scope="col">Telefone</th>
                                     <th scope="col">E-mail</th>
                                     <th scope="col">Assunto</th>
-                                    <th scope="col">Mensagem</th>
-                                    <th></th></tr>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <?php foreach($leads as $lead) : ?>
                                 <tr>
-                                    <td><?= $lead->name; ?></td>
-                                    <td>
-                                        <?= $lead->phone ?>
+                                    <td style="vertical-align: middle;"><?= $lead->nome(); ?></td>
+                                    <td style="vertical-align: middle;">
+                                        <?= $lead->email(); ?>
                                     </td>
-                                    <td><?= $lead->email; ?></td>
-                                    <td><?= $lead->subject; ?></td>
-                                    <td><?= $lead->message ?? "Vazio"; ?></td>
+                                    <td style="vertical-align: middle;"><?= $lead->telefone(); ?></td>
+                                    <td style="vertical-align: middle;"><?= $lead->assunto(); ?></td>
                                     <td>
-                                        <a href="javascript:void(0)" onclick="removerLead(<?= $lead->id; ?>)"><i class="text-danger bi bi-trash me-1"></i></a>
+                                        <div class="d-flex justify-content-end">
+                                            <a class="d-flex flex-column align-items-center text-decoration-none me-3" href="#">
+                                                <i class="text-primary bi bi-envelope-open"></i>
+                                                <span>Visualizar</span>
+                                            </a>
+                                            <a class="d-flex flex-column align-items-center text-decoration-none text-danger" href="#">
+                                                <i class="bi bi-trash"></i>
+                                                <span>Excluir</span>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -67,5 +75,5 @@
             </main>
         </div>
     </div>
-<script src="/assets/js/painel/listaLeads.js" defer></script>
+
 <?php require(__DIR__."/../../html.end.php"); ?>

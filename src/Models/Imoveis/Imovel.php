@@ -2,7 +2,9 @@
 
 namespace Models\Imoveis;
 
+use Api\ViaCep;
 use Core\ActiveRecord;
+use NumberFormatter;
 
 /**
  * @method int idProprietario()
@@ -36,6 +38,7 @@ final class Imovel extends ActiveRecord {
     protected string $titulo;
     protected string $descricao;
     protected string $tipo;
+    protected string $finalidade;
     protected string $preco;
     protected int $qntd_quartos;
     protected int $qntd_banheiros;
@@ -46,6 +49,8 @@ final class Imovel extends ActiveRecord {
     protected string $cep;
     protected string $endereco_numero;
     protected string $endereco_complemento;
+
+    protected array $_endereco;
 
     public function setAmbientes(int $quartos, int $banheiros, int $suites, int $garagem): Imovel {
         $this->qntd_quartos = $quartos;
@@ -69,5 +74,65 @@ final class Imovel extends ActiveRecord {
         $this->endereco_complemento = $complemento;
 
         return $this;
+    }
+
+    public function preco(): string {
+        return number_format($this->preco, 2, ",", ".");
+    }
+
+    public function areaUtil(): string {
+        return number_format($this->area_util, 2, ",", ".");
+    }
+
+    public function areaTotal(): string {
+        return number_format($this->area_total, 2, ",", ".");
+    }
+
+    public function cep(): string {
+        return preg_replace('/(\d{5})(\d{3})/','$1-$2', $this->cep);
+    }
+    
+    protected function endereco(): array {
+        if (empty($this->_endereco)) {
+            $this->_endereco = ViaCep::json($this->cep);
+        }
+
+        return $this->_endereco;
+    }
+
+    public function enderecoExtenso(): string {
+        $endereco = $this->endereco();
+
+        if (count($endereco)) {
+            return 
+                "{$this->logradouro()}, {$this->endereco_numero}, {$this->endereco_complemento}, ".
+                "{$this->bairro()}. {$this->cep}. {$this->localidade()} - {$this->uf()}.";
+        }
+
+        return $this->cep;
+    }
+
+    public function uf(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["uf"] ?? "";
+    }
+
+    public function localidade(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["localidade"] ?? "";
+    }
+
+    public function bairro(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["bairro"] ?? "";
+    }
+
+    public function logradouro(): string {
+        $endereco = $this->endereco();
+
+        return $endereco["logradouro"] ?? "";
     }
 }

@@ -4,19 +4,20 @@ namespace Api;
 
 use Core\Validator;
 use Exception;
-// use GuzzleHttp\Client;
-// use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use Throwable;
 
 final class ViaCep {
     public const URI = "https://viacep.com.br/ws/";
 
-    // protected static function guzzleRequest(): object {
-    //     $client = new Client();
-    //     $req = new Request("GET", static::URI."{$cep}/json");
-    //     $res = $client->sendAsync($req)->wait();
-    //     $endereco = json_decode($res->getBody());
-    // }
+    protected static function guzzleRequest(string $cep): object {
+        $client = new Client();
+        $req = new Request("GET", static::URI."{$cep}/json");
+        $res = $client->sendAsync($req)->wait();
+        
+        return json_decode($res->getBody());
+    }
 
     protected static function curlRequest(string $cep): object {
         $handler = curl_init();
@@ -40,7 +41,7 @@ final class ViaCep {
                 throw new Exception("O CEP inválido.");
             }
 
-            $endereco = static::curlRequest($cep);
+            $endereco = static::guzzleRequest($cep);
 
             if (!isset($endereco->erro)) {
                 return [

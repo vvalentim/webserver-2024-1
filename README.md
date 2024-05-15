@@ -66,6 +66,9 @@ Ainda no site da Vercel, configure as variáveis de ambiente. Você deve especif
 Project Settings > Environment Variables
 ```
 
+> [!NOTE]
+> Após adicionar pacotes Composer, utilize a flag --force para ignorar o _build cache_ nos deploys pelo CLI.
+
 ### Recursos
 
 - [Composer: para gerenciar as dependências do projeto](https://getcomposer.org/)
